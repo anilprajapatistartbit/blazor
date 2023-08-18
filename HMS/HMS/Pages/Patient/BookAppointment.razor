@@ -57,7 +57,7 @@
                             <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
                                 <RadzenStack Orientation="Orientation.Vertical">
                                 <RadzenLabel Text="Appointment date" />
-                                <RadzenDatePicker @bind-Value=@appointment.AppointmentDate ShowTime="false" Name="AppointmentDate" Min="@DateTime.Today" Max="@DateTime.Today.AddMonths(12)" Change="@(()=>CheckDoctorAvailability(appointment.DoctorId,appointment.AppointmentDate))" />
+                                    <RadzenDatePicker @bind-Value=@appointment.AppointmentDate ShowTime=@false DateFormat="d" Name="AppointmentDate" Min="@DateTime.Today" Max="@DateTime.Today.AddMonths(12)" Change="@(()=>CheckDoctorAvailability(appointment.DoctorId,appointment.AppointmentDate))" />
                                 <RadzenRequiredValidator Component="AppointmentDate" Text="Appointment date is required" Popup=@false />
                                 </RadzenStack>
                             </RadzenColumn>

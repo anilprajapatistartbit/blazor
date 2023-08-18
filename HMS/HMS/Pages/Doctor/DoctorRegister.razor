@@ -50,7 +50,7 @@
                             </RadzenColumn>
                             <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
                                 <RadzenLabel Text="Date of Birth" /><span class="rz-color-danger">*</span>
-                                <RadzenDatePicker Style="width: 100%;" Name="Dob" @bind-Value="doctor.Dob"  Max="@DateTime.Today.AddYears(-18)" />
+                                <RadzenDatePicker Style="width: 100%;" Name="Dob" @bind-Value="doctor.Dob" ShowTime=@false DateFormat="MM/dd/yyyy" Max="@DateTime.Today.AddYears(-18)" />
                                 <RadzenRequiredValidator Component="Dob" Text="Date of birth is required" Popup=@false />
 
                             </RadzenColumn>
