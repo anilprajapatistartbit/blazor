@@ -16,7 +16,7 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 ### Login Page
 ![screencapture-192-168-1-133-5000-Accountlogin-2023-08-18-14_06_19](https://github.com/anilprajapatistartbit/blazor/assets/121869921/7eea4a7a-5a35-40e4-a4d3-8071dd8b240c)
 
-### Register Rage
+### Register Page
 ![screencapture-192-168-1-133-5000-register-2023-08-18-14_07_46](https://github.com/anilprajapatistartbit/blazor/assets/121869921/8dbfa80e-fe46-4b1a-b10c-8e02ef11cc31)
 
 ### Doctor Registration Page
@@ -42,7 +42,8 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 ### Profile Edit page
 ![screencapture-192-168-1-133-5000-Editprofile-2023-08-18-14_16_16](https://github.com/anilprajapatistartbit/blazor/assets/121869921/d6c99665-8f40-4b60-b3e1-0b5f9c21f912)
 
-##Patient's View
+## Patient's View
+
 ### Book Appointment Page
 ![screencapture-192-168-1-133-5000-bookappointment-2023-08-18-14_18_57](https://github.com/anilprajapatistartbit/blazor/assets/121869921/6d0dd578-3210-4a1b-8eb6-f3541ac9a654)
 
@@ -84,9 +85,9 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
  - [Microsoft Visual Studio](https://visualstudio.microsoft.com/vs/community/)
  - [pgAdmin 4](https://www.pgadmin.org/download/)
 
- 2 - Set up a database on pgadmin 4
+ 2 - Set up a database on pgAdmin 4
  
- 3 - set the database name and host name in the Appsettings.json file in project 
+ 3 - Set the ConnectionString in the Appsettings.json file in the project 
  
  ![Screenshot 2023-08-18 145250](https://github.com/anilprajapatistartbit/blazor/assets/121869921/00fe590c-8cde-4bd8-beb7-702e1f2ad419)
 
