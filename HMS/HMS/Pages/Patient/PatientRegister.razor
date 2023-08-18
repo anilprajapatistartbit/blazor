@@ -1,0 +1,215 @@
+﻿@page "/Register/patient"
+@inject NotificationService NotificationService
+@inject IJSRuntime js;
+<PageTitle>Patient Registration</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="/" Text="" />
+                <RadzenBreadCrumbItem Path="/Register" Text="Registration" />
+                <RadzenBreadCrumbItem Path="/Register/patient" Text="Patient Registration" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    @if (isLoading)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+            <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenStack>
+        <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+
+    }
+    else
+    {
+        <RadzenTemplateForm Data="@patient" class="rz-mt-10" Style="width: 100%"  Submit="@((Patient args) => { Submit(args); })">
+            <RadzenRow Gap="2rem" class="rz-mt-4">
+                <RadzenFieldset Text="Basic Info" class="rz-text-center">
+                    <RadzenStack>
+                        <RadzenRow Gap="1rem">
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+
+                                <RadzenLabel Text="First Name" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;display:block" Name="FirstName" @bind-Value="@patient.FirstName" />
+                                <RadzenRequiredValidator Component="FirstName" Text="First name is required" Popup=@false />
+
+
+                            </RadzenColumn>
+
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Last Name" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="LastName" @bind-Value="@patient.LastName" />
+                                <RadzenRequiredValidator Component="LastName" Text="Last name is required" Popup=@false />
+                            </RadzenColumn>
+                           
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Password" /><span class="rz-color-danger">*</span>
+                                <RadzenPassword Name="Password" @bind-Value=@Password Style="width: 100%;display:block" />
+                                <RadzenRequiredValidator Component="Password" Text="Enter password" Popup=@false />
+
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Repeat Password" /><span class="rz-color-danger">*</span>
+                                <RadzenPassword Name="RepeatPassword" @bind-Value=@RepeatPassword Style="width: 100%;display:block" />
+                                <RadzenRequiredValidator Component="RepeatPassword" Text="Repeat your password" Popup=@false />
+                                <RadzenCompareValidator Visible=@(!string.IsNullOrEmpty(RepeatPassword)) Value=@Password Component="RepeatPassword" Text="Passwords should be the same" Popup=@false />
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenStack>
+                </RadzenFieldset>
+            </RadzenRow>
+            <RadzenRow Gap="2rem" class="rz-mt-4">
+                <RadzenFieldset Text="Contact Info" class="rz-text-center">
+                    <RadzenStack>
+                        <RadzenRow Gap="1rem">
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+
+                                <RadzenLabel Text="Email Id" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;display: block;" Name="Email" @bind-Value="@patient.Email" Change="@(()=>CheckEmail(patient.Email))" />
+                                <RadzenRequiredValidator Component="Email" Text="Email is required" Popup=@false />
+                                <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@false />
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Phone Number" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="PhoneNumber" @bind-Value="@patient.PhoneNumber" MaxLength="15" />
+                                <RadzenRequiredValidator Component="PhoneNumber" Text="Phone Number is required" Popup=@false />
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeSM="12">
+                                <RadzenLabel Text="Alternate Phone Number" />
+                                <RadzenTextBox Style="width: 100%;" Name="AlternatePhoneNumber" @bind-Value="@patient.AlternatePhoneNumber" MaxLength="15" />
+                                <RadzenCompareValidator Visible=@(!string.IsNullOrEmpty(patient.AlternatePhoneNumber)) Value=@patient.PhoneNumber Component="AlternatePhoneNumber" Operator=CompareOperator.NotEqual Text="Alternate phone number and phone number should not  be same" Popup=@false />
+                            </RadzenColumn>
+
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Address Line 1" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="AddressFirstLine" @bind-Value="@patient.AddressFirstLine" />
+
+                                <RadzenRequiredValidator Component="AddressFirstLine" Text="Address Line 1 is required" Popup=@false />
+
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Address Line 2" />
+                                <RadzenTextBox Style="width: 100%;" Name="AddressSecondLine" @bind-Value=@patient.AddressSecondLine />
+
+
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="City" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="City" @bind-Value="@patient.City" />
+
+                                <RadzenRequiredValidator Component="City" Text="City is required" Popup=@false />
+
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="State" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="State" @bind-Value="@patient.State" />
+
+                                <RadzenRequiredValidator Component="State" Text="State is required" Popup=@false />
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Country" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;" Name="Country" @bind-Value="@patient.Country" />
+
+                                <RadzenRequiredValidator Component="Country" Text="Country is required" Popup=@false />
+
+
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="4" SizeLG="4" SizeXL="4" SizeXS="12" SizeSM="12">
+                                <RadzenLabel Text="Zip Code" /><span class="rz-color-danger">*</span>
+                                <RadzenTextBox Style="width: 100%;display:block" Name="ZipCode" @bind-Value="@patient.ZipCode" />
+                                <RadzenRequiredValidator Component="ZipCode" Text="ZIP code is required" Popup=@false />
+                                <RadzenRegexValidator Component="ZipCode" Text="ZIP code must be 6 digits" Pattern="\d{6}" Popup=@false />
+
+
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenStack>
+                </RadzenFieldset>
+            </RadzenRow>
+
+
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+                <RadzenButton ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Medium" Icon="save" Text="Save" />
+                <RadzenButton ButtonStyle="ButtonStyle.Warning" Size="ButtonSize.Medium" Icon="restart_alt" Text="Reset" Click="@Reset" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Medium" Icon="arrow_back" Text="Back" Click="@Back" />
+            </RadzenStack>
+        </RadzenTemplateForm>
+    }
+
+
+</RadzenCard>
+
+@code {
+    Patient patient = new();
+    bool isLoading = false;
+    string Password = "";
+    string RepeatPassword = "";
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    [Inject]
+    private IPatientServiceData _patientService { get; set; }
+    [Inject]
+    private ILoginServiceData _loginService { get; set; }
+    async Task CheckEmail(string id)
+    {
+        var check = await _loginService.CheckEmail(id);
+        if (check)
+        {
+            NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = "Email Id Already Registered", Duration = 3000 };
+            NotificationService.Notify(message);
+            patient.Email = string.Empty;
+        }
+    }
+    private async Task Submit(Patient args)
+    {
+        isLoading = true;
+        var res = await _patientService.Create(args);
+
+        if (res.IsSuccess)
+        {
+            byte[] salt;
+            var hash = PasswordHelper.HashPasword(Password, out salt);
+            var hexstring = Convert.ToHexString(salt);
+            Login login = new() { Id = res.Value.Id, HashPassword = hash, SaltPassword = hexstring, IsActive = true, LoginType = "Patient", Email = res.Value.Email, Name = $"{res.Value.FirstName} {res.Value.LastName}" };
+            var val = await _loginService.Create(login);
+            isLoading = false;
+            if (val.IsSuccess)
+            {
+                NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Detail = res.Message, Duration = 3000 };
+                NotificationService.Notify(message);
+                patient = new();
+                isLoading = false;
+            }
+            else
+            {
+                NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = res.Message, Duration = 3000 };
+                NotificationService.Notify(message);
+                isLoading = false;
+            }
+        }
+        else
+        {
+            NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = res.Message, Duration = 3000 };
+            NotificationService.Notify(message);
+            isLoading = false;
+        }
+        navigationManager.NavigateTo("/Accountlogin");
+
+    }
+    void Reset()
+    {
+        isLoading = true;
+        Password = "";
+        RepeatPassword = "";
+        patient = new();
+        isLoading = false;
+    }
+
+    private async Task Back()
+    {
+        await js.InvokeVoidAsync("clientJsfunctions.GoBack");
+    }
+}

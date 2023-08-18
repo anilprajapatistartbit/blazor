@@ -1,0 +1,32 @@
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
+                <NotAuthorized >
+                    <RadzenRow Style="width:100%;">
+                        <RadzenStack AlignItems="AlignItems.Center" Style="width:100%;">
+                            <RadzenText class="rz-m-6" TextAlign="TextAlign.Center">Sorry, you're not authorized to reach this page.</RadzenText>
+                            <RadzenText TextAlign="TextAlign.Center">You may need to log in @(context.User.Identity.IsAuthenticated == true ? "as a different user.":"user first")</RadzenText>
+
+                        </RadzenStack>
+                    </RadzenRow>
+                  
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+               
+                   <RadzenRow Style="width:100%;">
+                        <RadzenStack AlignItems="AlignItems.Center" Style="width:100%;">
+                        <RadzenText class="rz-m-6" TextAlign="TextAlign.Center">Sorry! Page not found or there's nothing at this address</RadzenText>
+                   </RadzenStack>
+               </RadzenRow>
+             
+            </LayoutView>
+        </NotFound>
+
+    </Router>
+</CascadingAuthenticationState>

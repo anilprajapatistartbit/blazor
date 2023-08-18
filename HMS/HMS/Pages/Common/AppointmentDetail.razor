@@ -1,0 +1,138 @@
+﻿@page "/Appointments/{Id}"
+@attribute [Authorize]
+@inject IJSRuntime js;
+<PageTitle>Appointment detail</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="" Text="" />
+                <RadzenBreadCrumbItem Path="/Appointments" Text="Appointments" />
+                <RadzenBreadCrumbItem Path="@($"/Appointments/{Id}")" Text="Detail" />
+
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    @if (isLoading)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+            <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenStack>
+        <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+    }
+    else
+    {
+        <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
+            <RadzenText TextStyle="TextStyle.H6"><strong>Appointment Information</strong></RadzenText>
+
+            <RadzenRow RowGap="0" class="rz-py-4 rz-px-2">
+                <RadzenColumn Size="12">
+                    <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                            <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Patient Name</b></RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                            <RadzenText TextStyle="TextStyle.Body1">@(appointment?.Patient.FirstName + " " + appointment?.Patient.LastName)</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Patient's Phone Number</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TextStyle="TextStyle.Body1">@(appointment?.Patient.PhoneNumber) @(appointment?.Patient.PhoneNumber != null ? ", " + appointment?.Patient.AlternatePhoneNumber : "")</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Patient's Address</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TextStyle="TextStyle.Body1">@(appointment?.Patient.AddressFirstLine), @(appointment?.Patient.AddressSecondLine != null ? appointment?.Patient.AlternatePhoneNumber + "," : "") @(appointment?.Patient.City), @(appointment?.Patient.State), @(appointment?.Patient.Country) - @(appointment?.Patient.ZipCode)</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Appointment Date</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TextStyle="TextStyle.Body1">@(appointment?.AppointmentDate.ToShortDateString())</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Appointment Time</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TextStyle="TextStyle.Body1">@(appointment?.AppointmentTime.HasValue == true ? appointment?.AppointmentTime.Value.ToString("t") : "N/A")</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Status</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TextStyle="TextStyle.Body1">@(appointment?.Status.ToUpper())</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Doctor Name</b></RadzenText>
+
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TagName="TagName.P">@(appointment?.Doctor.FirstName + " " + (appointment?.Doctor.MiddleName == null ? "" : appointment?.Doctor.MiddleName + " ") + appointment?.Doctor.LastName)</RadzenText>
+
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Doctor Analysis</b></RadzenText>
+
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TagName="TagName.P">@(appointment?.AnalysisReport)</RadzenText>
+
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow class="rz-mb-2" AlignItems="AlignItems.Center">
+                            <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                                <RadzenText TextStyle="TextStyle.Body1" class="rz-color-dark"><b>Doctor Prescription</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="10" SizeLG="10" SizeXL="10">
+                                <RadzenText TagName="TagName.P"><b>@(appointment?.DoctorPrescription)</b></RadzenText>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenButton Text="Back" Icon="arrow_back" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@Back" />
+            </RadzenRow>
+
+        </RadzenCard>
+    }
+</RadzenCard>
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    bool isLoading = false;
+    public Appointment appointment;
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        appointment = await _appointmentServiceData.GetById(Id);
+        isLoading = false;
+
+    }
+    private async Task Back()
+    {
+        await js.InvokeVoidAsync("clientJsfunctions.GoBack");
+       
+    }
+}

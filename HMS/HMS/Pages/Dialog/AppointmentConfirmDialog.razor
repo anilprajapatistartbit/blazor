@@ -1,0 +1,151 @@
+﻿@inject DialogService DialogService
+@inject NotificationService NotificationService
+
+@if (isLoading)
+{
+
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+        <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </RadzenStack>
+    <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+}
+else
+{
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenTemplateForm Data="@appointment" class="rz-mt-2" Style="width: 100%" Submit="@((Appointment args) => { Submit(args); })">
+            <RadzenStack Style="width: 100%" class="rz-mb-4">
+                @if (Status == "Examined")
+                {
+                    <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                        <RadzenColumn Size="12">
+                            <RadzenLabel Text="Doctor's Analysis Report Summary" />
+                            <RadzenTextArea Placeholder="Enter here..." @bind-Value=@appointment.AnalysisReport Name="AnalysisReport" class="w-100" />
+                            <RadzenRequiredValidator Component="AnalysisReport" Text="Analysis report  is required" Popup=@false />
+                        </RadzenColumn>
+
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                        <RadzenColumn Size="12">
+                            <RadzenLabel Text="Doctor's Prescription Summary" />
+                            <RadzenTextArea Placeholder="Enter here..." @bind-Value=@appointment.DoctorPrescription Name="DoctorPrescription" class="w-100" />
+                            <RadzenRequiredValidator Component="DoctorPrescription" Text="Doctor prescription  is required" Popup=@false />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                        <RadzenColumn Size="12">
+                            <RadzenSwitch Name="Revisit" @bind-Value=@isclose />
+                            <RadzenLabel Text="Want to closed or patient needs to re-visit?" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+                else if (Status != "Cancelled")
+                {
+
+                    @if (Status == "Reschedule" || Status == "Revisit")
+                    {
+                        <RadzenLabel Text="Reschedule Appointment Date" />
+                         <RadzenDatePicker @bind-Value=@appointment.AppointmentDate ShowTime="false" Name="AppointmentDate" Min="@DateTime.Today" Max="@DateTime.Today.AddMonths(12)" />
+                        <RadzenRequiredValidator Component="AppointmentDate" Text="Appointment date is required" Popup=@false />
+                    }
+                    else
+                    {
+                        <RadzenLabel Text="Appointment Time" />
+                        <RadzenDropDown @bind-Value=@appointment.AppointmentTime AllowClear="true" Placeholder="Select Slot" Data="@slotlist" Style="width: 100%;" Name="AppointmentTime" TextProperty="Text" ValueProperty="DateValue"></RadzenDropDown>
+                        <RadzenRequiredValidator Component="AppointmentTime" Text="Appointment time is required" Popup=@false />
+                    }
+
+
+                }
+                else
+                {
+
+                    <RadzenText TextAlign="TextAlign.Start">Are you sure you want to @Status.ToLower() appointement ?</RadzenText>
+                }
+
+            </RadzenStack>
+            <RadzenButton Text="Ok" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small" />
+            <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@Cancel" />
+        </RadzenTemplateForm>
+    </RadzenStack>
+}
+
+
+
+@code {
+    bool isLoading = false;
+
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public Appointment appointment { get; set; }
+    [Parameter] public string Status { get; set; }
+    [Parameter]
+    public IEnumerable<DropDownData> slotlist { get; set; }
+    bool isclose = false;
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
+    NotificationMessage message = new NotificationMessage { Duration = 3000 };
+    private async Task Cancel()
+    {
+        isLoading = false;
+        await OnClose.InvokeAsync();
+        DialogService.Close();
+
+    }
+
+    private async void Submit(Appointment args)
+    {
+        isLoading = true;
+
+        if (Status == "Examined")
+        {
+            appointment.AnalysisReport = args.AnalysisReport;
+            appointment.DoctorPrescription = args.DoctorPrescription;
+            appointment.Status = isclose ? "Revisit" : "Closed";
+            appointment.ReVisit = isclose;
+
+        }
+        else if (Status != "Cancelled")
+        {
+            if (Status == "Reschedule" || Status == "Revisit")
+            {
+                appointment.AppointmentTime = null;
+                appointment.Status = "Pending";
+                appointment.AppointmentDate = args.AppointmentDate;
+            }
+            else
+            {
+                var date = appointment.AppointmentDate;
+                var newdate = args.AppointmentTime.Value;
+                appointment.Status = Status;
+                appointment.AppointmentTime = new DateTime(date.Year, date.Month, date.Day, newdate.Hour, newdate.Minute, newdate.Second);
+            }
+
+        }
+        else
+        {
+            appointment.Status = Status;
+        }
+        var res = await _appointmentServiceData.Update(appointment);
+        if (res.IsSuccess)
+        {
+            message.Summary = "Success";
+            message.Severity = NotificationSeverity.Success;
+            message.Detail = res.Message;
+            NotificationService.Notify(message);
+            isLoading = false;
+            await OnClose.InvokeAsync();
+            DialogService.Close();
+        }
+        else
+        {
+            message.Summary = "Error";
+            message.Severity = NotificationSeverity.Error;
+            message.Detail = res.Message;
+            isLoading = false;
+            NotificationService.Notify(message);
+        }
+
+    }
+
+}

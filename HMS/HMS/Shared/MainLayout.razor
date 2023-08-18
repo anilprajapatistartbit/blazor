@@ -1,0 +1,68 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>HAS</PageTitle>
+<RadzenLayout>
+    <RadzenNotification />
+    <RadzenDialog />
+    <RadzenContextMenu />
+    <RadzenTooltip />
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" Gap="0">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                <RadzenSidebarToggle Click="@toggle" />
+                <RadzenLabel Text="Hospital Admin" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="@sidebar2Expanded">
+        <AuthorizeView>
+            <Authorized>
+               @* <RadzenPanelMenu Style="border-bottom:1px solid #fff;">*@
+                <RadzenProfileMenu Style="border-bottom:1px solid #fff; width: 100%;background-color: var(--rz-sidebar-background-color);border-left:none;padding:0px">
+                        <Template>
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" class="rz-p-2">
+
+                                <RadzenText TagName="TagName.Div" class="profile-name-single">@(context.User.Identity.Name.FirstOrDefault())</RadzenText>
+                                    <RadzenText TagName="TagName.Div" class="profile-name">@(context.User.Identity.Name)</RadzenText>
+                                </RadzenStack>
+                        </Template>
+                        <ChildContent>
+                            <RadzenProfileMenuItem Text="My Profile" Path="myprofile" Icon="account_circle"></RadzenProfileMenuItem>
+                            <RadzenProfileMenuItem Text="Change Password" Path="changepassword" Icon="lock"></RadzenProfileMenuItem>
+                        </ChildContent>
+                    </RadzenProfileMenu>
+                    
+              @*  </RadzenPanelMenu>*@
+            </Authorized>
+        </AuthorizeView>
+        <NavMenu />
+
+        <div class="Profile">
+            <AuthorizeView>
+                <Authorized>
+                    <RadzenPanelMenu>
+                        <RadzenPanelMenuItem Path="/logout?returnUrl=/" Style="width:100%;" Icon="logout" Text="Log out" Match="NavLinkMatch.All" />
+                    </RadzenPanelMenu>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="">
+            @Body
+        </div>
+    </RadzenBody>
+    @*<RadzenFooter>
+    Footer
+    </RadzenFooter>*@
+</RadzenLayout>
+
+@code {
+    bool sidebar2Expanded = true;
+
+    void toggle()
+    {
+        sidebar2Expanded = !sidebar2Expanded;
+    }
+}

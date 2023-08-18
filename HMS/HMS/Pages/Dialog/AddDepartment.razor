@@ -1,0 +1,61 @@
+﻿@inject DialogService DialogService
+@if (isLoading)
+{
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+        <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </RadzenStack>
+    <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+}
+else
+{
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenTemplateForm Data="@department" class="rz-mt-6" Style="width: 100%" Submit="@((Department args) => { Submit(args); })">
+            <RadzenStack Style="width: 100%" class="rz-mb-4">
+                <RadzenLabel Text="Department Name" />
+                <RadzenTextBox Style="width: 100%;display:block" Name="DepartmentName" @bind-Value="@department.DepartmentName" />
+                <RadzenRequiredValidator Component="DepartmentName" Text="Department name is required" Popup=@false />
+            </RadzenStack>
+            <RadzenButton Text="Ok" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small" />
+            <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@Cancel" />
+        </RadzenTemplateForm>
+
+    </RadzenStack>
+}
+@code {
+    Department department = new();
+    bool isLoading = false;
+    [Inject]
+    IDepatmentServiceData _depatmentService { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+
+    private async Task Cancel()
+    {
+        isLoading = false;
+        department = new();
+        await OnClose.InvokeAsync();
+        DialogService.Close();
+
+    }
+    private async void Submit(Department args)
+    {
+        isLoading = true;
+        args.IsActive = true;
+        args.Id = 0;
+        var res = await _depatmentService.Create(args);
+        if (res.IsSuccess)
+        {
+            isLoading = false;
+            department = new();
+            await OnClose.InvokeAsync();
+            DialogService.Close();
+        }
+        else
+        {
+            isLoading = false;
+        }
+    }
+
+}

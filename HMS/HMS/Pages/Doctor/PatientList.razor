@@ -1,0 +1,93 @@
+﻿@page "/Patients"
+@attribute [Authorize(Roles = "Doctor")]
+@inject AuthenticationStateProvider ASP;
+@inject TooltipService tooltipService;
+@inject DialogService DialogService
+<PageTitle>Patients</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="" Text="" />
+                <RadzenBreadCrumbItem Path="/Patients" Text="Patients" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    <AuthorizeView Roles="Doctor">
+        @if (isLoading)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+                <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </RadzenStack>
+            <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+        }
+        else
+        {
+            <RadzenText TextStyle="TextStyle.H6" class="rz-mb-4 rz-mt-6"><strong>Patient List</strong></RadzenText>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" Density="Density.Compact" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" GridLines="@GridLines" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        Data="@patients" TItem="Patient" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                <Columns>
+                    <RadzenDataGridColumn TItem="Patient" Title="Patient Name" Property="FirstName" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                        <Template Context="data">
+                            @(data.FirstName + " " + data.LastName)
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Patient" Title="Email address" Property="Email" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center" />
+                    <RadzenDataGridColumn TItem="Patient" Title="Mobile Number" Property="PhoneNumber" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center" />
+                    <RadzenDataGridColumn TItem="Patient" Title="Alternate Mobile Number" Property="AlternatePhoneNumber" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center" />
+                    <RadzenDataGridColumn TItem="Patient" Title="Address" Property="State" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                        <Template Context="data">
+                            @(data.AddressFirstLine + ", " + data.LastName == null ? data.LastName + ", " : " " + data.City + ", " + data.State + ", " + data.Country + " - " + data.ZipCode)
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Patient" Title="Action" Property="Id" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                        <Template Context="data">
+                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
+                                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Patient detail"))" Click="@(args => ViewAppointment(data))" />
+                            </RadzenStack>
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        }
+    </AuthorizeView>
+
+</RadzenCard>
+@code {
+    bool isLoading = false;
+    Radzen.DataGridGridLines GridLines = Radzen.DataGridGridLines.Default;
+    IEnumerable<Patient> patients;
+    [Inject]
+    private IPatientServiceData _patientServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+    void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var user = await ASP.GetAuthenticationStateAsync();
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        patients = await _patientServiceData.GetByDocId(Id.Value);
+        isLoading = false;
+
+    }
+
+    public async Task ViewAppointment(Patient data)
+    {
+
+        await DialogService.OpenAsync<PatientDetail>("Patient Detail", new Dictionary<string, object>
+            {
+                { "OnClose", new EventCallback(this, OnDialogClose) },
+                {"patient" , data },
+            }, new DialogOptions() { Resizable = true, Draggable = true });
+
+    }
+    public async Task OnDialogClose()
+    {
+        await OnInitializedAsync();
+    }
+}

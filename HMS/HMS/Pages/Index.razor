@@ -1,0 +1,220 @@
+﻿@page "/"
+@inject AuthenticationStateProvider asp;
+@*@attribute [Authorize(Roles ="Doctor")]*@
+@inject TooltipService tooltipService;
+@inject DialogService DialogService
+<PageTitle>Home - Hospital Admin</PageTitle>
+
+<RadzenCard class="rz-mx-0">
+
+
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="" Text="" />
+                <RadzenBreadCrumbItem Path="/" Text="Home" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    <AuthorizeView Roles="Doctor">
+       @if (isLoading)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+                <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </RadzenStack>
+            <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+        }
+        else
+        {
+            <RadzenRow AlignItems="AlignItems.Center" class="rz-mt-6" Style="width:100%;">
+
+                <RadzenColumn Size="12" SizeMD="3" SizeLG="3" SizeXL="3">
+                    <RadzenCard class="rz-background-color-info-lighter">
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenText TagName="TagName.P"><b>Total Patient</b></RadzenText>
+                                <RadzenText TagName="TagName.P"><b>@(dashboard.TotalPatient)</b></RadzenText>
+                            </RadzenText>
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenIcon IconStyle="IconStyle.Info" Style="font-size:4rem;" Icon="masks" />
+                            </RadzenText>
+
+                        </RadzenStack>
+                    </RadzenCard>
+
+
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="3" SizeLG="3" SizeXL="3">
+
+                    <RadzenCard class="rz-background-color-info-lighter">
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenText TagName="TagName.P"><b>Total Appointment</b></RadzenText>
+                                <RadzenText TagName="TagName.P"><b>@(dashboard.TodaysAppointment)</b></RadzenText>
+                            </RadzenText>
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenIcon IconStyle="IconStyle.Info" Style="font-size:4rem;" Icon="local_hospital" />
+                            </RadzenText>
+
+                        </RadzenStack>
+                    </RadzenCard>
+
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="3" SizeLG="3" SizeXL="3">
+
+                    <RadzenCard class="rz-background-color-info-lighter">
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenText TagName="TagName.P"><b>Today's Appointment</b></RadzenText>
+                                <RadzenText TagName="TagName.P"><b>@(dashboard.TodaysAppointment)</b></RadzenText>
+                            </RadzenText>
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenIcon IconStyle="IconStyle.Info" Style="font-size:4rem;" Icon="local_hospital" />
+                            </RadzenText>
+
+                        </RadzenStack>
+                    </RadzenCard>
+
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="3" SizeLG="3" SizeXL="3">
+
+                    <RadzenCard class="rz-background-color-info-lighter">
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenText TagName="TagName.P"><b>Pending Appointment</b></RadzenText>
+                                <RadzenLink Path="/Appointments"><b>@(dashboard.PendingAppointment)</b></RadzenLink>
+                            </RadzenText>
+                            <RadzenText TagName="TagName.Div">
+                                <RadzenIcon IconStyle="IconStyle.Info" Style="font-size:4rem;" Icon="work_history" />
+                            </RadzenText>
+
+                        </RadzenStack>
+                    </RadzenCard>
+
+                </RadzenColumn>
+
+
+            </RadzenRow>
+            <RadzenRow AlignItems="AlignItems.Center" class="rz-mt-6" Style="width:100%;">
+                <RadzenColumn Size="12">
+                    <RadzenText TextStyle="TextStyle.H6" class="rz-mb-4 rz-mt-6"><strong>Today's Appointment</strong></RadzenText>
+                    <RadzenDataGrid AllowFiltering="true" Density="Density.Compact" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                                Data="@appointments" TItem="Appointment" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="Appointment" Title="Name" Property="Patient.FirstName" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                                <Template Context="data">
+                                    @(data.Patient.FirstName + " " + data.Patient.LastName)
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="Appointment" Title="Appointment Date" Property="AppointmentDate" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                                <Template Context="data">
+                                    @(data.AppointmentDate.ToShortDateString())
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="Appointment" Title="Appointment Time" Property="AppointmentTime" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                                <Template Context="data">
+                                    @(data.AppointmentTime.HasValue ? data.AppointmentTime.Value.ToString("t") : "N/A")
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="Appointment" Title="Status" Frozen="true" Property="Status" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                                <Template Context="data">
+                                    @if (data.Status.ToLower() == "pending")
+                                    {
+                                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Danger" Text="@data.Status" class="rz-ml-2" />
+                                    }
+                                    else if (data.Status.ToLower() == "confirmed")
+                                    {
+                                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Success" Text="@data.Status" class="rz-ml-2" />
+                                    }
+                                    else if (data.Status.ToLower() == "closed")
+                                    {
+                                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Primary" Text="@data.Status" class="rz-ml-2" />
+                                    }
+                                    else
+                                    {
+                                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Warning" Text="@data.Status" class="rz-ml-2" />
+                                    }
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="Appointment" Title="Action" Frozen="true" Sortable="false" Property="Id" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                                <Template Context="data">
+                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.4rem" JustifyContent="JustifyContent.Center">
+                                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Appointment detail"))" Click="@(args => ViewAppointment(data.Id))" />
+                                        @if (data.Status == "Pending")
+                                        {
+                                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="done" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Confirm"))" Click="@(args => OpenDialog(data,"Confirmed"))" />
+                                        }
+                                        @if (data.Status == "Pending" || data.Status == "Confirmed")
+                                        {
+                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"cancel"))" Click="@(args => OpenDialog(data,"Cancelled"))" />
+                                        }
+                                        @if (data.Status == "Confirmed" || data.Status == "Revisit")
+                                        {
+                                            <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="add" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Add Summary"))" Click="@(args => OpenDialog(data,"Examined"))" />
+                                        }
+
+                                    </RadzenStack>
+                                </Template>
+                            </RadzenDataGridColumn>
+                        </Columns>
+                    </RadzenDataGrid>
+
+                </RadzenColumn>
+            </RadzenRow>
+        }
+    </AuthorizeView>
+    <AuthorizeView Roles="Patient"><RadzenText TextStyle="TextStyle.Body2" TextAlign="TextAlign.Center">Home page comin soon....</RadzenText></AuthorizeView>
+</RadzenCard>
+@code{
+    DashboardResponse dashboard = new();
+    IEnumerable<Appointment> appointments;
+    bool isLoading = false;
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var user = await asp.GetAuthenticationStateAsync();
+        if(!user.User.Identity.IsAuthenticated){
+            navigationManager.NavigateTo("/Accountlogin");
+
+        }
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
+        
+            dashboard = await _appointmentServiceData.GetDashboardData(Id.Value, Role.Value);
+            appointments = dashboard.appointments;
+       
+        isLoading = false;
+    }
+    void ViewAppointment(string Id)
+    {
+        navigationManager.NavigateTo("/Appointments/" + Id);
+    }
+
+    public async Task OpenDialog(Appointment data, string status)
+    {
+        var header = status == "Examined" ? "Add Summary" : "Appointment Confirmation";
+        await DialogService.OpenAsync<AppointmentConfirmDialog>(header, new Dictionary<string, object>
+            {
+                { "OnClose", new EventCallback(this, OnDialogClose) },
+                {"appointment" , data },
+                {"Status",status}
+            }, new DialogOptions() { Resizable = true, Draggable = true });
+
+    }
+
+    public async Task OnDialogClose()
+    {
+        await OnInitializedAsync();
+    }
+}
+
+
+
+
+

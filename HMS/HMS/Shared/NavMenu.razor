@@ -1,0 +1,36 @@
+﻿
+
+<RadzenPanelMenu>
+
+    <AuthorizeView Roles="Doctor">
+        <Authorized>
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Appointments" Icon="local_hospital" Path="Appointments" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Patients" Icon="masks" Path="Patients" Match="NavLinkMatch.All" />
+        </Authorized>
+
+    </AuthorizeView>
+    <AuthorizeView Roles="Patient">
+        <Authorized>
+            <RadzenPanelMenuItem Text="Book Appointtment" Icon="work_history" Path="bookappointment" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Appointtments" Icon="local_hospital" Path="Appointments" Match="NavLinkMatch.All" />
+        </Authorized>
+
+    </AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+            <RadzenPanelMenuItem Text="Register" Icon="app_registration" Path="register" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Login" Icon="login" Path="Accountlogin" Match="NavLinkMatch.All" />
+        </NotAuthorized>
+    </AuthorizeView>
+</RadzenPanelMenu>
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

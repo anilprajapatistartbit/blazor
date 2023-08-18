@@ -1,0 +1,148 @@
+﻿@page "/AccountLogin"
+@using System.Web;
+@inject NotificationService NotificationService
+@inject IJSRuntime js;
+@inject AuthenticationStateProvider ASP;
+<PageTitle>Login</PageTitle>
+<RadzenCard class="rz-mx-0">
+
+
+    <RadzenText Text="Login" TextAlign="TextAlign.Center" TextStyle="TextStyle.DisplayH4" class="rz-mt-2" />
+    <RadzenTemplateForm Data=@login Submit="@((LoginModal args)=>OnLogin(args))" class="rz-my-3 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+       @* @if (isLoading)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+                <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </RadzenStack>
+            <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+        }
+        else
+        {*@
+            <RadzenStack Gap="1rem">
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                    <RadzenColumn Size="4" SizeMD="4">
+                        <RadzenLabel Text="Username" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="8" SizeMD="8">
+                        <RadzenTextBox Style="width: 100%;display:block" Name="UserName" @bind-Value="@login.UserName" />
+                        <RadzenRequiredValidator Component="UserName" Text="Username is required" Popup=@false />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                    <RadzenColumn Size="4" SizeMD="4">
+                        <RadzenLabel Text="Password" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="8" SizeMD="8">
+                        <RadzenPassword Style="width: 100%;display:block" Name="Password" @bind-Value="@login.Password" />
+                        <RadzenRequiredValidator Component="Password" Text="Password is required" Popup=@false />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                    <RadzenColumn Size="4" SizeMD="4">
+                        <RadzenLabel Text="Login Type" />
+                    </RadzenColumn>
+                    <RadzenColumn Size="8" SizeMD="8">
+                        <RadzenDropDown Style="width: 100%;display:block" @bind-Value="login.LoginType" AllowClear="true" Placeholder="Select something" Data="@logintype" TextProperty="Text" ValueProperty="Value" Name="LoginType"></RadzenDropDown>
+                        <RadzenRequiredValidator Component="LoginType" Text="LoginType is required" Popup=@false />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                    <RadzenColumn Size="4" SizeMD="4">
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="8" SizeMD="8">
+                        <RadzenSwitch @bind-Value=@login.IsRemember />
+                        <RadzenLabel Text="Remember me" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                    <RadzenColumn Size="4" SizeMD="4">
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="8" SizeMD="8">
+                        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                            <RadzenButton Size="ButtonSize.Medium" ButtonType="ButtonType.Submit" class="rz-button" IsBusy=@isLoading BusyText="Login..." Text="Login" Icon="login" ButtonStyle="ButtonStyle.Info" />
+                            @*<RadzenLink Path="/ForgotPassword" Text="Forgot Password?" Style="color:blue" />*@
+                        </RadzenStack>
+                    </RadzenColumn>
+                </RadzenRow>
+
+                <RadzenRow AlignItems="AlignItems.Center" class="rz-p-4" Style="background:rgb(0,0,0,0.1); border-radius:5px">
+                    <RadzenColumn Size="12" SizeMD="12">
+                        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                            <RadzenText Text="Don't have a account?" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Light" class="rz-button" Text="Register" ButtonType="ButtonType.Button" Click=@Goto />
+                        </RadzenStack>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenStack>
+       @* }*@
+    </RadzenTemplateForm>
+</RadzenCard>
+
+
+@code {
+    LoginModal login = new();
+    bool isLoading = false;
+    List<DropDownData> logintype = new();
+    [Inject]
+    private ILoginServiceData _loginService { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    NotificationMessage message = new NotificationMessage { Duration = 3000 };
+    void Goto()
+    {
+        navigationManager.NavigateTo("/Register");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        logintype.Clear();
+        logintype.Add(new DropDownData() { Text = "Doctor", Value = "Doctor" });
+        logintype.Add(new DropDownData() { Text = "Patient", Value = "Patient" });
+        var user = await ASP.GetAuthenticationStateAsync();
+        if (user.User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/");
+        }
+    }
+    async Task OnLogin(LoginModal args)
+    {
+        isLoading = true;
+        var val = await _loginService.Login(args);
+
+        if (val != null)
+        {
+            byte[] salt = Convert.FromHexString(val.SaltPassword);
+            var check = PasswordHelper.VerifyPassword(args.Password, val.HashPassword, salt);
+            if (check)
+            {
+                message.Summary = "Success";
+                message.Severity = NotificationSeverity.Success;
+                message.Detail = "Logged In";
+                var url = $"/Login?paramUsername={HttpUtility.UrlEncode(args.UserName)}&paramIsremember={HttpUtility.UrlEncode(args.IsRemember.ToString())}&paramLoginType={HttpUtility.UrlEncode(val.LoginType)}&paramName={HttpUtility.UrlEncode(val.Name)}&paramId={HttpUtility.UrlEncode(val.Id)}";
+                await js.InvokeVoidAsync("clientJsfunctions.RedirectTo", url);
+
+
+            }
+            else
+            {
+                message.Summary = "Error";
+                message.Severity = NotificationSeverity.Error;
+                message.Detail = "Invalid username or password";
+            }
+        }
+        else
+        {
+            message.Summary = "Error";
+            message.Severity = NotificationSeverity.Error;
+            message.Detail = "User not found";
+        }
+        NotificationService.Notify(message);
+        isLoading = false;
+    }
+
+
+
+}

@@ -1,0 +1,129 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = HMS
+build_property.RootNamespace = HMS
+build_property.ProjectDir = D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Lakshmikant jangid\Repository\blazor\HMS\HMS
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/AppointmentDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXEFwcG9pbnRtZW50RGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/AppointmentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXEFwcG9pbnRtZW50TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/ChangePassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXENoYW5nZVBhc3N3b3JkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/LoginPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXExvZ2luUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/MyProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXE15UHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXFJlZ2lzdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Dialog/AddDepartment.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlhbG9nXEFkZERlcGFydG1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Dialog/AppointmentConfirmDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlhbG9nXEFwcG9pbnRtZW50Q29uZmlybURpYWxvZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Dialog/PatientDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlhbG9nXFBhdGllbnREZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Doctor/DoctorAppointmentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXERvY3RvckFwcG9pbnRtZW50TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Doctor/DoctorProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXERvY3RvclByb2ZpbGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Doctor/DoctorRegister.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXERvY3RvclJlZ2lzdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Doctor/PatientList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXFBhdGllbnRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/BookAppointment.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxCb29rQXBwb2ludG1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/PatientAppointmentList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxQYXRpZW50QXBwb2ludG1lbnRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/PatientProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxQYXRpZW50UHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/PatientRegister.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxQYXRpZW50UmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-h3wwvfm3re
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-kg56vsuyvi
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

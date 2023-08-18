@@ -1,0 +1,69 @@
+﻿@inject AuthenticationStateProvider asp
+@attribute [Authorize(Roles = "Patient")]
+@inject IJSRuntime js;
+<RadzenStack Gap="1rem" class="rz-mt-6">
+  @if (isLoading)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+            <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenStack>
+        <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+    }
+    else
+    {
+      <RadzenRow>
+            <RadzenColumn Size="12" SizeMD="6" Class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
+                <RadzenText TextStyle="TextStyle.Subtitle1">Patient Information</RadzenText>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenStack Gap="0" Class="rz-text-truncate">
+                        <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Name</RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(patient.FirstName + " " + patient.LastName)</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-4 rz-mb-0" Style="color: var(--rz-text-tertiary-color);">Email</RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(patient.Email)</b></RadzenText>
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6" Class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
+                <RadzenText TextStyle="TextStyle.Subtitle1">Communication Information</RadzenText>
+                <RadzenStack Gap="0" Class="rz-text-truncate">
+                    <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Address</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(patient.AddressFirstLine), @(patient.AddressSecondLine != null ? patient.AlternatePhoneNumber + "," : "")</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(patient.City), @(patient.State), @(patient.Country) - @(patient.ZipCode)</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Phone Number</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(patient.PhoneNumber) @(patient.AlternatePhoneNumber != null ? ", " + patient.AlternatePhoneNumber : "")</b></RadzenText>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenStack JustifyContent="JustifyContent.End" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+            <RadzenButton Text="Back" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Icon="arrow_back" Click="@Back" />
+        </RadzenStack>
+    }
+</RadzenStack>
+
+@code {
+    Patient patient = new();
+    bool isLoading = false;
+    [Inject]
+    private IPatientServiceData _patientServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var user = await asp.GetAuthenticationStateAsync();
+        if (!user.User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/Accountlogin");
+
+        }
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        patient = await _patientServiceData.GetById(Id.Value);
+        isLoading = false;
+    }
+    private async Task Back()
+    {
+        await js.InvokeVoidAsync("clientJsfunctions.GoBack");
+    }
+}

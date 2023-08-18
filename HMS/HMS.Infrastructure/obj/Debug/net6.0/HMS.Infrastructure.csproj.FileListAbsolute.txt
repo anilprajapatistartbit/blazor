@@ -1,0 +1,15 @@
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\bin\Debug\net6.0\HMS.Infrastructure.deps.json
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\bin\Debug\net6.0\HMS.Infrastructure.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\bin\Debug\net6.0\HMS.Infrastructure.pdb
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\bin\Debug\net6.0\HMS.Model.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\bin\Debug\net6.0\HMS.Model.pdb
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.csproj.AssemblyReference.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.AssemblyInfoInputs.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.AssemblyInfo.cs
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.csproj.CopyComplete
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\refint\HMS.Infrastructure.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\HMS.Infrastructure.pdb
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Infrastructure\obj\Debug\net6.0\ref\HMS.Infrastructure.dll

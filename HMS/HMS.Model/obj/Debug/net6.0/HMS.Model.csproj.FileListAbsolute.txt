@@ -1,0 +1,12 @@
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\bin\Debug\net6.0\HMS.Model.deps.json
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\bin\Debug\net6.0\HMS.Model.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\bin\Debug\net6.0\HMS.Model.pdb
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.csproj.AssemblyReference.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.AssemblyInfoInputs.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.AssemblyInfo.cs
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.csproj.CoreCompileInputs.cache
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\refint\HMS.Model.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\HMS.Model.pdb
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS.Model\obj\Debug\net6.0\ref\HMS.Model.dll

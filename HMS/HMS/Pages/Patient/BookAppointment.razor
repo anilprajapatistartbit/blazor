@@ -1,0 +1,189 @@
+﻿@page "/bookappointment"
+@attribute [Authorize(Roles = "Patient")]
+@inject IJSRuntime js;
+@inject AuthenticationStateProvider ASP
+@inject NotificationService NotificationService
+<PageTitle>Book Appointment</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="/" Text="" />
+                <RadzenBreadCrumbItem Path="/bookappointment" Text="Book Appointment" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    @if (isLoading)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+            <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenStack>
+        <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+
+    }
+    else
+    {
+        <RadzenCard class="my-4" style="display: flex; align-items: center; gap: 0.5rem">
+            <RadzenRow AlignItems="AlignItems.Center">
+                
+                <RadzenColumn Size="12" SizeMD="5" SizeLG="5" SizeXL="5">
+                    <RadzenText TagName="TagName.Div">Search Doctor By Department:</RadzenText>
+                </RadzenColumn>
+                     <RadzenColumn Size="12" SizeMD="5" SizeLG="5" SizeXL="5"> <RadzenDropDown @bind-Value="searchfilter" AllowClear="true" Placeholder="Select something" Change=@FilterSearch Data="@departments" Style="width: 100%;" TextProperty="DepartmentName" ValueProperty="Id" Name="DepartmentId"></RadzenDropDown></RadzenColumn>
+                      <RadzenColumn Size="12" SizeMD="2" SizeLG="2" SizeXL="2">
+                    @if (searchfilter > 0)
+                    {
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Icon="delete" Text="Clear" Click=@RemoveSearch />
+                    }
+                      </RadzenColumn>
+            </RadzenRow>
+            
+           
+        </RadzenCard>
+        <RadzenTemplateForm Data="@appointment" class="rz-mt-2" Submit="@((Appointment args) => { Submit(args); })">
+            <RadzenRow Gap="1rem" class="rz-mt-2">
+                <RadzenFieldset Text="Fill Appointment" class="rz-text-center" Style="width:100%">
+                    <RadzenStack>
+                        <RadzenRow Gap="1rem">
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+                                <RadzenStack Orientation="Orientation.Vertical">
+                                    <RadzenLabel Text="Select Doctor" />
+                                    <RadzenDropDown @bind-Value="appointment.DoctorId" AllowClear="true" Placeholder="Select something" Data="@doctors" Style="width: 100%;" Name="DoctorName" TextProperty="FirstName" ValueProperty="Id"></RadzenDropDown>
+                                    <RadzenRequiredValidator Component="DoctorName" Text="Doctor is required" Popup=@false />
+                                </RadzenStack>
+                            </RadzenColumn>
+                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
+                                <RadzenStack Orientation="Orientation.Vertical">
+                                <RadzenLabel Text="Appointment date" />
+                                <RadzenDatePicker @bind-Value=@appointment.AppointmentDate ShowTime="false" Name="AppointmentDate" Min="@DateTime.Today" Max="@DateTime.Today.AddMonths(12)" Change="@(()=>CheckDoctorAvailability(appointment.DoctorId,appointment.AppointmentDate))" />
+                                <RadzenRequiredValidator Component="AppointmentDate" Text="Appointment date is required" Popup=@false />
+                                </RadzenStack>
+                            </RadzenColumn>
+
+                        </RadzenRow>
+                    </RadzenStack>
+                </RadzenFieldset>
+                
+
+            </RadzenRow>
+            <RadzenRow Gap="2rem" class="rz-mt-2">
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-mt-8 rz-mb-4">
+                    <RadzenButton ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Medium" Icon="save" Text="Save" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Warning" Size="ButtonSize.Medium" Icon="restart_alt" Text="Reset" Click="@Reset" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Medium" Icon="arrow_back" Text="Back" Click="@Back" />
+                </RadzenStack>
+            </RadzenRow>
+        </RadzenTemplateForm>
+    }
+</RadzenCard>
+
+
+@code {
+    bool isLoading = false;
+    int searchfilter;
+    private Department[] departments { get; set; }
+    private Appointment appointment = new();
+    private IEnumerable<Doctor> doctors { get; set; }
+    [Inject]
+    private IDepatmentServiceData _depatmentService { get; set; }
+    [Inject]
+    private IDoctorServiceData _doctorServiceData { get; set; }
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        departments = await _depatmentService.GetAll();
+        doctors = await _doctorServiceData.GetBySearch(searchfilter);
+        appointment.AppointmentDate = DateTime.Today;
+        isLoading = false;
+    }
+    private async Task FilterSearch()
+    {
+        isLoading = true;
+        departments = await _depatmentService.GetAll();
+        doctors = await _doctorServiceData.GetBySearch(searchfilter);
+        isLoading = false;
+    }
+    private async Task RemoveSearch()
+    {
+        searchfilter = 0;
+        await FilterSearch();
+    }
+    private async Task Submit(Appointment args)
+    {
+        isLoading = true;
+        var user = await ASP.GetAuthenticationStateAsync();
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
+        args.PatientId = Id.Value;
+        args.Status = "Pending";
+        args.AppointmentTime = null;
+        var res = await _appointmentServiceData.Create(args);
+        if (res.IsSuccess)
+        {
+            NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Detail = res.Message, Duration = 3000 };
+            NotificationService.Notify(message);
+            appointment = new();
+            appointment.AppointmentDate = DateTime.Today;
+            isLoading = false;
+            Refresh();
+
+        }
+        else
+        {
+            NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = res.Message, Duration = 3000 };
+            NotificationService.Notify(message);
+            isLoading = false;
+        }
+        isLoading = false;
+    }
+    void Reset()
+    {
+        isLoading = true;
+        appointment = new();
+        appointment.AppointmentDate = DateTime.Today;
+        isLoading = false;
+    }
+    void Refresh()
+    {
+        navigationManager.NavigateTo("/Appointments");
+    }
+    private async Task Back()
+    {
+        await js.InvokeVoidAsync("clientJsfunctions.GoBack");
+    }
+
+    async Task CheckDoctorAvailability(string docId,DateTime date)
+    {
+        NotificationMessage message = new NotificationMessage { Duration = 3000 };
+        IEnumerable<Appointment> appointmetlist;
+        if (docId == null || docId == "")
+        {
+            message.Severity = NotificationSeverity.Error;
+            message.Summary = "Error";
+            message.Detail = "Please select doctor first";
+            NotificationService.Notify(message);
+        }
+        else
+        {
+            appointmetlist = await _appointmentServiceData.GetAppointments(docId, "Doctor", date);
+            if (appointmetlist.Count() > 24)
+            {
+                message.Severity = NotificationSeverity.Error;
+                message.Summary = "Error";
+                message.Detail = "Slot not available";
+                NotificationService.Notify(message);
+                appointment.AppointmentDate = DateTime.Today;
+            }
+            
+        }
+        
+       
+    }
+}

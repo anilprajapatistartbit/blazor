@@ -1,0 +1,115 @@
+﻿@attribute [Authorize(Roles = "Patient")]
+@inject AuthenticationStateProvider ASP;
+@inject TooltipService tooltipService;
+@inject DialogService DialogService
+
+    @if (isLoading)
+{
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+        <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </RadzenStack>
+    <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+
+}
+else
+{
+    <RadzenText TextStyle="TextStyle.H6" class="rz-mb-4 rz-mt-6"><strong>Appointment List</strong></RadzenText>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" Density="Density.Compact" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" GridLines="@GridLines" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@appointments" TItem="Appointment" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Appointment" Title="Name" Property="Patient.FirstName" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @(data.Patient.FirstName + " " + data.Patient.LastName)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Appointment" Title="Appointment Date" Property="AppointmentDate" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @(data.AppointmentDate.ToShortDateString())
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Appointment" Title="Appointment Time" Property="AppointmentTime" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @(data.AppointmentTime.HasValue ? data.AppointmentTime.Value.ToString("t"):"N/A")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Appointment" Title="Status" Frozen="true" Property="Status" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    @if (data.Status.ToLower() == "pending")
+                    {
+                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Danger" Text="@data.Status" class="rz-ml-2" />
+                    }
+                    else if (data.Status.ToLower() == "confirmed")
+                    {
+                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Success" Text="@data.Status" class="rz-ml-2" />
+                    }
+                    else if (data.Status.ToLower() == "closed")
+                    {
+                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Primary" Text="@data.Status" class="rz-ml-2" />
+                    }
+                    else
+                    {
+                        <RadzenBadge Variant="Variant.Filled" BadgeStyle="BadgeStyle.Warning" Text="@data.Status" class="rz-ml-2" />
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Appointment" Title="Action" Frozen="true" Sortable="false" Property="Id" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                <Template Context="data">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.4rem" JustifyContent="JustifyContent.Center">
+                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Appointment detail"))" Click="@(args => ViewAppointment(data.Id))" />
+                        @if (data.Status != "Closed" && data.Status != "Cancelled")
+                        {
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"cancel"))" Click="@(args => OpenDialog(data,"Cancelled"))" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="restart_alt" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Reschedule"))" Click="@(args => OpenDialog(data,"Reschedule"))" />
+                        }
+
+                    </RadzenStack>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+}
+@code {
+    bool isLoading = false;
+    Radzen.DataGridGridLines GridLines = Radzen.DataGridGridLines.Default;
+    IEnumerable<Appointment> appointments;
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+    void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var user = await ASP.GetAuthenticationStateAsync();
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
+
+        appointments = await _appointmentServiceData.GetAllById(Id.Value, Role.Value);
+        isLoading = false;
+
+    }
+
+    void ViewAppointment(string Id)
+    {
+        navigationManager.NavigateTo("/Appointments/" + Id);
+    }
+
+    public async Task OpenDialog(Appointment data, string status)
+    {
+        var header = status == "Examined" ? "Add Summary" : "Appointment Confirmation";
+        await DialogService.OpenAsync<AppointmentConfirmDialog>(header, new Dictionary<string, object>
+            {
+                { "OnClose", new EventCallback(this, OnDialogClose) },
+                {"appointment" , data },
+                {"Status",status}
+            }, new DialogOptions() { Resizable = true, Draggable = true });
+
+    }
+
+    public async Task OnDialogClose()
+    {
+        await OnInitializedAsync();
+    }
+}

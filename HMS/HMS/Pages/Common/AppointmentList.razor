@@ -1,0 +1,22 @@
+﻿@page "/Appointments"
+@attribute [Authorize]
+<PageTitle>Appointments</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="" Text="" />
+                <RadzenBreadCrumbItem Path="/appointments" Text="Appointments" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    <AuthorizeView Roles="Doctor">
+        <HMS.Pages.Doctor.DoctorAppointmentList/>
+    </AuthorizeView>
+    <AuthorizeView Roles="Patient">
+        <HMS.Pages.Patient.PatientAppointmentList/>
+    </AuthorizeView>
+    </RadzenCard>
+@code {
+   
+}

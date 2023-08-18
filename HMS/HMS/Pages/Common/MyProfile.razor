@@ -1,0 +1,22 @@
+﻿@page "/myprofile"
+@attribute [Authorize]
+<PageTitle>My Profile</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+        <RadzenColumn Size="12" class="rz-text-align-center">
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Path="" Text="" />
+                <RadzenBreadCrumbItem Path="/myprofile" Text="My Profile" />
+            </RadzenBreadCrumb>
+        </RadzenColumn>
+    </RadzenRow>
+    <AuthorizeView Roles="Doctor">
+        <HMS.Pages.Doctor.DoctorProfile/>
+    </AuthorizeView>
+    <AuthorizeView Roles="Patient">
+       <HMS.Pages.Patient.PatientProfile/>
+    </AuthorizeView>
+    </RadzenCard>
+@code {
+
+}
