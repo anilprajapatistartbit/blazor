@@ -76,6 +76,20 @@ namespace HMS.Service.Implementations
                 throw;
             }
         }
+
+        public async Task<Patient> Update(Patient patient)
+        {
+            try
+            {
+                var result = await _unitOfWork.Patients.EditData(patient);
+                var resultcheck = await _unitOfWork.CompleteAsync();
+                return await Task.Run(() => (resultcheck) ? result : null);
+            }
+            catch
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

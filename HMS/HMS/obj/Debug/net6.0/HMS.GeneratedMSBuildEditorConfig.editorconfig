@@ -40,6 +40,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXE15UHJvZmlsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/ProfileEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXFByb2ZpbGVFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Common/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbW9uXFJlZ2lzdGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,6 +76,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXFBhdGllbnRMaXN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Doctor/ProfileEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yXFByb2ZpbGVFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,6 +98,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/PatientRegister.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxQYXRpZW50UmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Pages/Patient/ProfileEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudFxQcm9maWxlRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Lakshmikant jangid/Repository/blazor/HMS/HMS/Shared/SurveyPrompt.razor]

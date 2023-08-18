@@ -14,12 +14,14 @@ namespace HMS.Controller
     {
         #region Fields
         private readonly IDoctorService _doctorservice;
+        private readonly ILoginService _loginService;
         #endregion
 
         #region Constructor
-        public DoctorController(IDoctorService doctorService)
+        public DoctorController(IDoctorService doctorService, ILoginService loginService)
         {
             _doctorservice = doctorService;
+            _loginService = loginService;
         }
         #endregion
 
@@ -44,8 +46,8 @@ namespace HMS.Controller
         {
             try
             {
-             var res = await _doctorservice.GetAll();
-            return StatusCode(StatusCodes.Status200OK, res);
+                var res = await _doctorservice.GetAll();
+                return StatusCode(StatusCodes.Status200OK, res);
             }
             catch (Exception ex)
             {
@@ -59,7 +61,7 @@ namespace HMS.Controller
         {
             try
             {
-                 
+
                 if (data != null)
                 {
                     var res = await _doctorservice.Insert(data);
@@ -72,7 +74,50 @@ namespace HMS.Controller
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] Doctor data)
+        {
+            try
+            {
+                var doc = await _doctorservice.GetById(id);
+                var login = await _loginService.GetById(id);
+                if (doc == null)
+                {
+                    throw new Exception("Doctor not found");
+                }
+                doc.FirstName = data.FirstName;
+                doc.LastName = data.LastName;
+                doc.MiddleName = data.MiddleName;
+                doc.PhoneNumber = data.PhoneNumber;
+                doc.AlternatePhoneNumber = data.AlternatePhoneNumber;
+                doc.AddressFirstLine = data.AddressFirstLine;
+                doc.AddressSecondLine = data.AddressSecondLine;
+                doc.City = data.City;
+                doc.State = data.State;
+                doc.Country = data.Country;
+                doc.ZipCode = data.ZipCode;
+                doc.Dob = data.Dob;
+                doc.Experience = data.Experience;
+                doc.Qualification = data.Qualification;
+                doc.DepartmentId = data.DepartmentId;
+                doc.Speciality = data.Speciality;
+                var middle = (doc.MiddleName == null || doc.MiddleName == "") ? " " : " "+doc.MiddleName + " ";
+                login.Name = $"{doc.FirstName}{middle}{doc.LastName}";
+                var res = await _doctorservice.Update(doc);
+                var l = await _loginService.Update(login);
+                return StatusCode(StatusCodes.Status200OK, res);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
         [HttpGet("GetDoc/{id}")]

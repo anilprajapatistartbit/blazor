@@ -12,12 +12,14 @@ namespace HMS.Controller
     {
         #region Fields
         private readonly IPatientService _patientService;
+        private readonly ILoginService _loginService;
         #endregion
 
         #region Constructor
-        public PatientController(IPatientService patientService)
-        { 
-           _patientService= patientService;
+        public PatientController(IPatientService patientService, ILoginService loginService)
+        {
+            _patientService = patientService;
+            _loginService = loginService;
         }
         #endregion
 
@@ -28,12 +30,12 @@ namespace HMS.Controller
         {
             try
             {
-               
-                    var res = await _patientService.GetAllByDocId(Id);
-                    return StatusCode(StatusCodes.Status200OK, res);
-                
 
-                
+                var res = await _patientService.GetAllByDocId(Id);
+                return StatusCode(StatusCodes.Status200OK, res);
+
+
+
             }
             catch (Exception ex)
             {
@@ -73,6 +75,40 @@ namespace HMS.Controller
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("Update/{Id}")]
+        public async Task<IActionResult> Put(string Id, [FromBody] Patient data)
+        {
+            try
+            {
+                var pat = await _patientService.GetById(Id);
+                var login = await _loginService.GetById(Id);
+                if (pat == null)
+                {
+                    throw new Exception("Patient not found");
+                }
+                pat.FirstName = data.FirstName;
+                pat.LastName = data.LastName;
+                pat.PhoneNumber = data.PhoneNumber;
+                pat.AlternatePhoneNumber = data.AlternatePhoneNumber;
+                pat.AddressFirstLine = data.AddressFirstLine;
+                pat.AddressSecondLine = data.AddressSecondLine;
+                pat.City = data.City;
+                pat.State = data.State;
+                pat.Country = data.Country;
+                pat.ZipCode = data.ZipCode;
+                login.Name = $"{pat.FirstName} {pat.LastName}";
+                var res = await _patientService.Update(pat);
+                var l = await _loginService.Update(login);
+                return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)

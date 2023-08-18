@@ -45,6 +45,19 @@ namespace HMS.DataService
         {
             return await _httpClient.GetFromJsonAsync<Patient>("api/Patient/GetById/" + Id);
         }
+
+        public async Task<StatusResponse<Patient>> Update(Patient patient)
+        {
+            var response = await _httpClient.PutAsJsonAsync<Patient>("api/Patient/Update/"+patient.Id, patient);
+            if (response.IsSuccessStatusCode)
+            {
+                return new StatusResponse<Patient>() { IsSuccess = true, Value = await response.ReadAsync<Patient>(), Message = "Profile update successfully" };
+            }
+            else
+            {
+                return new StatusResponse<Patient>() { IsSuccess = false, Value = null, Message = "Failed to update profile" };
+            }
+        }
         #endregion
     }
 }

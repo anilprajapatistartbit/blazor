@@ -18,7 +18,7 @@
             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
                 <RadzenStack Gap="0" Class="rz-text-truncate">
                     <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Name</RadzenText>
-                    <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.FirstName + " " + doctor.LastName)</b></RadzenText>
+                        <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.FirstName) @(doctor.MiddleName != null && doctor.MiddleName != "" ? doctor.MiddleName: "") @(doctor.LastName)</b></RadzenText>
                     <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-4 rz-mb-0" Style="color: var(--rz-text-tertiary-color);">Date of Birth</RadzenText>
                     <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.Dob.HasValue ? doctor.Dob.Value.ToString("D"):"N/A")</b></RadzenText>
                 </RadzenStack>
@@ -62,7 +62,7 @@
             <RadzenText TextStyle="TextStyle.Subtitle1">Communication Information</RadzenText>
             <RadzenStack Gap="0" Class="rz-text-truncate">
                 <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Address</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.AddressFirstLine), @(doctor.AddressSecondLine != null ? doctor.AddressSecondLine + "," : "") @(doctor.City), @(doctor.State), @(doctor.Country) - @(doctor.ZipCode)</b></RadzenText>
+                    <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.AddressFirstLine), @(doctor.AddressSecondLine != null && doctor.AddressSecondLine != "" ? doctor.AddressSecondLine + "," : "") @(doctor.City), @(doctor.State), @(doctor.Country) - @(doctor.ZipCode)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" Class="rz-mt-2 rz-my-0" Style="color: var(--rz-text-tertiary-color);">Phone Number</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" Class="rz-text-truncate"><b>@(doctor.PhoneNumber) @(doctor.AlternatePhoneNumber != null ? ", " + doctor.AlternatePhoneNumber : "")</b></RadzenText>
             </RadzenStack>

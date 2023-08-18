@@ -17,7 +17,6 @@
     <RadzenSidebar @bind-Expanded="@sidebar2Expanded">
         <AuthorizeView>
             <Authorized>
-               @* <RadzenPanelMenu Style="border-bottom:1px solid #fff;">*@
                 <RadzenProfileMenu Style="border-bottom:1px solid #fff; width: 100%;background-color: var(--rz-sidebar-background-color);border-left:none;padding:0px">
                         <Template>
                             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" class="rz-p-2">
@@ -28,11 +27,11 @@
                         </Template>
                         <ChildContent>
                             <RadzenProfileMenuItem Text="My Profile" Path="myprofile" Icon="account_circle"></RadzenProfileMenuItem>
+                            <RadzenProfileMenuItem Text="Edit Profile" Path="Editprofile" Icon="edit"></RadzenProfileMenuItem>
                             <RadzenProfileMenuItem Text="Change Password" Path="changepassword" Icon="lock"></RadzenProfileMenuItem>
+                           
                         </ChildContent>
                     </RadzenProfileMenu>
-                    
-              @*  </RadzenPanelMenu>*@
             </Authorized>
         </AuthorizeView>
         <NavMenu />

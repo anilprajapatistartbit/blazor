@@ -10,5 +10,6 @@ namespace HMS.DataService
         Task<IEnumerable<Patient>> GetByDocId(string Id);
         [HttpGet("GetByDocId/{Id}")]
         Task<Patient> GetById(string Id);
+        Task<StatusResponse<Patient>> Update(Patient patient);
     }
 }
