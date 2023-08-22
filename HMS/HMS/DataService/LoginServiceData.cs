@@ -69,6 +69,25 @@ namespace HMS.DataService
                 return new StatusResponse<Login>() { IsSuccess = false, Value = null, Message = "Failed to change password" };
             }
         }
+
+        public async Task<IEnumerable<Login>> GetAll()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<Login>>("api/Auth/GetAll");
+        }
+
+        public async Task<StatusResponse<Login>> LoginIsActive(string id, bool status)
+        {
+            var val = await _httpClient.PutAsJsonAsync<bool>("api/Auth/Status/" + id, status);
+            var message = status ? "enable" : "disable";
+            if (val.IsSuccessStatusCode)
+            {
+                return new StatusResponse<Login>() { IsSuccess = true, Value = await val.ReadAsync<Login>(), Message = $"User successfully {message}d" };
+            }
+            else
+            {
+                return new StatusResponse<Login>() { IsSuccess = false, Value = null, Message = $"Failed to {message} user" };
+            }
+        }
         #endregion
     }
 }

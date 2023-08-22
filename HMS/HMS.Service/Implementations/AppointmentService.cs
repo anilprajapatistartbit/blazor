@@ -80,7 +80,12 @@ namespace HMS.Service.Implementations
         {
             try { return await _unitOfWork.Appointments.GetByExpression(s=>s.Id == Id); } catch { throw; }
         }
+
+        public async Task<IEnumerable<Appointment>> GetAll()
+        {
+            try { return (await _unitOfWork.Appointments.GetData()).OrderByDescending(s => s.AppointmentDate); } catch { throw; }
+        }
         #endregion
-    
-}
+
+    }
 }

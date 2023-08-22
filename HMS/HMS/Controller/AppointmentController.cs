@@ -49,6 +49,11 @@ namespace HMS.Controller
                     var doc = await _appointmentService.GetByDoctorId(Id);
                     return StatusCode(StatusCodes.Status200OK, doc);
                 }
+                else if (type.ToLower() == "admin")
+                {
+                    var adm = await _appointmentService.GetAll();
+                    return StatusCode(StatusCodes.Status200OK, adm);
+                }
                 else
                 {
                     var pat = await _appointmentService.GetByPatientId(Id);

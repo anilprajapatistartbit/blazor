@@ -9,7 +9,7 @@ namespace HMS.DataService
         Task<Appointment> GetById(string Id);
         Task<StatusResponse<Appointment>> Create(Appointment appointment);
         Task<StatusResponse<Appointment>> Update(Appointment appointment);
-        Task<DashboardResponse> GetDashboardData(string Id,string type);
+        Task<DashboardResponse<Appointment>> GetDashboardData(string Id,string type);
         Task<IEnumerable<Appointment>> GetAppointments(string Id, string type,DateTime date);
     }
 }

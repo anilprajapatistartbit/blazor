@@ -33,5 +33,9 @@ namespace HMS.Infrastructure
         #region Delete
         Task<T> DeleteData(int id);
         #endregion
+
+        #region Count
+        Task<int> CountAll();
+        #endregion
     }
 }

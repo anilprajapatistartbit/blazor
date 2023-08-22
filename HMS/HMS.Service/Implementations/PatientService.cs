@@ -90,6 +90,23 @@ namespace HMS.Service.Implementations
                 throw;
             }
         }
+
+        public async Task<int> TotalCount()
+        {
+            try { return await _unitOfWork.Patients.CountAll(); }catch { throw; }
+        }
+
+        public async Task<IEnumerable<Patient>> GetAll()
+        {
+            try
+            {
+                return await _unitOfWork.Patients.GetData();
+            }
+            catch
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

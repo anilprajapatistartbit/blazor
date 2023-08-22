@@ -72,7 +72,7 @@
                 <RadzenRow AlignItems="AlignItems.Center" class="rz-p-4" Style="background:rgb(0,0,0,0.1); border-radius:5px">
                     <RadzenColumn Size="12" SizeMD="12">
                         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
-                            <RadzenText Text="Don't have a account?" />
+                            <RadzenText Text="Don't have an account?" />
                             <RadzenButton ButtonStyle="ButtonStyle.Light" class="rz-button" Text="Register" ButtonType="ButtonType.Button" Click=@Goto />
                         </RadzenStack>
                     </RadzenColumn>
@@ -101,6 +101,7 @@
         logintype.Clear();
         logintype.Add(new DropDownData() { Text = "Doctor", Value = "Doctor" });
         logintype.Add(new DropDownData() { Text = "Patient", Value = "Patient" });
+        logintype.Add(new DropDownData() { Text = "Admin", Value = "Admin" });
         var user = await ASP.GetAuthenticationStateAsync();
         if (user.User.Identity.IsAuthenticated)
         {
@@ -118,11 +119,21 @@
             var check = PasswordHelper.VerifyPassword(args.Password, val.HashPassword, salt);
             if (check)
             {
-                message.Summary = "Success";
-                message.Severity = NotificationSeverity.Success;
-                message.Detail = "Logged In";
-                var url = $"/Login?paramUsername={HttpUtility.UrlEncode(args.UserName)}&paramIsremember={HttpUtility.UrlEncode(args.IsRemember.ToString())}&paramLoginType={HttpUtility.UrlEncode(val.LoginType)}&paramName={HttpUtility.UrlEncode(val.Name)}&paramId={HttpUtility.UrlEncode(val.Id)}";
-                await js.InvokeVoidAsync("clientJsfunctions.RedirectTo", url);
+                if (!val.IsActive)
+                {
+                    message.Summary = "Error";
+                    message.Severity = NotificationSeverity.Error;
+                    message.Detail = "Account is disabled";
+                }
+                else
+                {
+                    message.Summary = "Success";
+                    message.Severity = NotificationSeverity.Success;
+                    message.Detail = "Logged In";
+                    var url = $"/Login?paramUsername={HttpUtility.UrlEncode(args.UserName)}&paramIsremember={HttpUtility.UrlEncode(args.IsRemember.ToString())}&paramLoginType={HttpUtility.UrlEncode(val.LoginType)}&paramName={HttpUtility.UrlEncode(val.Name)}&paramId={HttpUtility.UrlEncode(val.Id)}";
+                    await js.InvokeVoidAsync("clientJsfunctions.RedirectTo", url);
+                }
+               
 
 
             }

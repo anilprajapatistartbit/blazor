@@ -71,6 +71,21 @@ namespace HMS.DataService
                 return new StatusResponse<Doctor>() { IsSuccess = false, Value = null, Message = "Failed to update profile" };
             }
         }
+        public async Task<DashboardResponse<Doctor>> GetDashboardById(string id,string type)
+        {
+            var doctor = await _httpClient.GetFromJsonAsync<int>("api/Doctor/Count");
+            var patient = await  _httpClient.GetFromJsonAsync<int>("api/Patient/Count");
+            var list = await _httpClient.GetFromJsonAsync<IEnumerable<Doctor>>("api/Doctor");
+            var appointment = await _httpClient.GetFromJsonAsync <IEnumerable<Appointment>> ($"api/Appointment/GetListById/{id}/{type}");
+            var pendingappointment = appointment.Where(s => s.Status.ToLower() == "pending").Count();
+            var date = DateTime.Today;
+            var todaysappointment = appointment.Where(s => s.Status.ToLower() != "cancelled" && s.AppointmentDate.Month == date.Month && s.AppointmentDate.Year == date.Year && s.AppointmentDate.Date == date.Date).Count();
+            return new DashboardResponse<Doctor>() { TotalPatient = patient, TodaysAppointment = todaysappointment, list = list,PendingAppointment = pendingappointment,TotalAppointment =doctor  };
+        }
+        public async Task<IEnumerable<Doctor>> GetAll()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<Doctor>>("api/Doctor");
+        }
         #endregion
     }
 }

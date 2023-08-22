@@ -81,6 +81,10 @@ namespace HMS.Service.Implementations
         {
             try { return await _unitOfWork.Doctors.GetAllByExpression(s=>s.DepartmentId == id); } catch { throw; }
         }
+        public async Task<int> TotalCount()
+        {
+            try { return await _unitOfWork.Doctors.CountAll(); }catch { throw; }
+        }
         #endregion
     }
 }

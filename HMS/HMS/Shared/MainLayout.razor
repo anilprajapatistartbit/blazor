@@ -15,7 +15,23 @@
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar2Expanded">
-        <AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <RadzenProfileMenu Style="border-bottom:1px solid #fff; width: 100%;background-color: var(--rz-sidebar-background-color);border-left:none;padding:0px">
+                    <Template>
+                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" class="rz-p-2">
+
+                            <RadzenText TagName="TagName.Div" class="profile-name-single">@(context.User.Identity.Name.FirstOrDefault())</RadzenText>
+                                <RadzenText TagName="TagName.Div" class="profile-name">@(context.User.Identity.Name)</RadzenText>
+                            </RadzenStack>
+                        </Template>
+                        <ChildContent>
+                            <RadzenProfileMenuItem Text="Change Password" Path="changepassword" Icon="lock"></RadzenProfileMenuItem>
+                        </ChildContent>
+                    </RadzenProfileMenu>
+                </Authorized>
+            </AuthorizeView>
+        <AuthorizeView Roles="Doctor,Patient">
             <Authorized>
                 <RadzenProfileMenu Style="border-bottom:1px solid #fff; width: 100%;background-color: var(--rz-sidebar-background-color);border-left:none;padding:0px">
                         <Template>
