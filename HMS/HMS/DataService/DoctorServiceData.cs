@@ -80,7 +80,7 @@ namespace HMS.DataService
             var pendingappointment = appointment.Where(s => s.Status.ToLower() == "pending").Count();
             var date = DateTime.Today;
             var todaysappointment = appointment.Where(s => s.Status.ToLower() != "cancelled" && s.AppointmentDate.Month == date.Month && s.AppointmentDate.Year == date.Year && s.AppointmentDate.Date == date.Date).Count();
-            return new DashboardResponse<Doctor>() { TotalPatient = patient, TodaysAppointment = todaysappointment, list = list,PendingAppointment = pendingappointment,TotalAppointment =doctor  };
+            return new DashboardResponse<Doctor>() { TotalPatient = patient, TodaysAppointment = todaysappointment, list = list,PendingAppointment = pendingappointment, TotalAppointment =doctor  };
         }
         public async Task<IEnumerable<Doctor>> GetAll()
         {

@@ -234,7 +234,7 @@
                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
                             <RadzenText TagName="TagName.Div">
                                 <RadzenText TagName="TagName.P"><b>Pending Appointment</b></RadzenText>
-                                <RadzenLink Path="/Appointments"><b>@(dashboard.PendingAppointment)</b></RadzenLink>
+                                <RadzenLink Path="/Appointments"><b>@(dashboardAdmin.PendingAppointment)</b></RadzenLink>
                             </RadzenText>
                             <RadzenText TagName="TagName.Div">
                                 <RadzenIcon IconStyle="IconStyle.Info" Style="font-size:4rem;" Icon="work_history" />
@@ -264,10 +264,10 @@
                             <hr style="border: none; background-color: rgba(0,0,0,.2); height: 1px; margin: 1rem 0;" />
                             <RadzenRow>
                                 <RadzenColumn Size="8" Class="rz-text-truncate">
-                                    <b>@(login.Id)</b>
+                                    <b>@(login.LoginType.ToUpper())</b>
                                 </RadzenColumn>
                                 <RadzenColumn Size="4" Class="rz-text-align-end">
-                                    <RadzenBadge BadgeStyle=@(login.IsActive ? BadgeStyle.Success : BadgeStyle.Danger) Style="cursor:pointer" Text=@login.LoginType @onclick=@(args=>LoginStatus(login.Id,login.IsActive)) />
+                                    <RadzenBadge BadgeStyle=@(login.IsActive ? BadgeStyle.Success : BadgeStyle.Danger) Style="cursor:pointer" Text=@(login.IsActive ?"ACTIVE" : "INACTIVE") @onclick=@(args=>LoginStatus(login.Id,login.IsActive)) />
                                 </RadzenColumn>
                             </RadzenRow>
                         </RadzenCard>
