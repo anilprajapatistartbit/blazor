@@ -15,9 +15,9 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 ## Interface
 
 ## Admin's view
-
 ### Home Page
-![screencapture-192-168-1-133-2023-08-22-16_40_34](https://github.com/sb-238/blazor/assets/121869921/6d04a366-9f06-4a7f-b1ba-e53727bb731a)
+![screencapture-192-168-1-133-2023-08-22-17_01_49](https://github.com/sb-238/blazor/assets/121869921/30f99eed-b088-4b58-a66f-477c31593df4)
+
 ![screencapture-192-168-1-133-Patients-d3e6a67c-02fa-4b14-b1e5-89968b4015e7-2023-08-22-16_40_46](https://github.com/sb-238/blazor/assets/121869921/a6714fb2-2843-4e3c-a0ce-ab76363c44a0)
 ![screencapture-192-168-1-133-Patients-Appointments-d3e6a67c-02fa-4b14-b1e5-89968b4015e7-2023-08-22-16_40_57](https://github.com/sb-238/blazor/assets/121869921/e3232a8d-9317-46af-8386-99652423a580)
 
