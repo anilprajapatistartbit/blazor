@@ -1,4 +1,4 @@
-﻿@attribute [Authorize (Roles ="Doctor")]
+﻿@attribute [Authorize (Roles ="Doctor,Admin")]
 @inject AuthenticationStateProvider ASP;
 @inject TooltipService tooltipService;
 @inject DialogService DialogService
@@ -91,6 +91,7 @@
     bool isLoading = false;
     Radzen.DataGridGridLines GridLines = Radzen.DataGridGridLines.Default;
     IEnumerable<Appointment> appointments;
+    [Parameter] public string DocId { get; set; }
     [Inject]
     private IAppointmentServiceData _appointmentServiceData { get; set; }
     [Inject]
@@ -101,13 +102,20 @@
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        var user = await ASP.GetAuthenticationStateAsync();
-        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
-        var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
+        if (DocId == null)
+        {
+            var user = await ASP.GetAuthenticationStateAsync();
+            var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+            var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
 
-        id = Id.Value;
-        role = Role.Value;
-        appointments = await _appointmentServiceData.GetAllById(Id.Value, Role.Value);
+            id = Id.Value;
+            role = Role.Value;
+            appointments = await _appointmentServiceData.GetAllById(Id.Value, Role.Value);
+        }
+        else
+        {
+            appointments = await _appointmentServiceData.GetAllById(DocId,"Doctor");
+        }
         isLoading = false;
 
     }

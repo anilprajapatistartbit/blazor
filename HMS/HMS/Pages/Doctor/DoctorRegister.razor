@@ -3,6 +3,7 @@
 @inject NotificationService NotificationService
 @inject DialogService DialogService
 @inject TooltipService tooltipService
+@attribute [Authorize(Roles ="Admin")]
 <PageTitle>Doctor Registration</PageTitle>
 <RadzenCard class="rz-mx-0">
     <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">

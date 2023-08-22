@@ -1,5 +1,6 @@
 ﻿@page "/Patients"
-@attribute [Authorize(Roles = "Doctor")]
+@page "/Patients/{id}"
+@attribute [Authorize(Roles = "Doctor,Admin")]
 @inject AuthenticationStateProvider ASP;
 @inject TooltipService tooltipService;
 @inject DialogService DialogService
@@ -9,11 +10,18 @@
         <RadzenColumn Size="12" class="rz-text-align-center">
             <RadzenBreadCrumb>
                 <RadzenBreadCrumbItem Path="" Text="" />
-                <RadzenBreadCrumbItem Path="/Patients" Text="Patients" />
+                @if (id == null)
+                {
+                    <RadzenBreadCrumbItem Path="/Patients" Text="Patients" />
+                }
+                else
+                {
+                    <RadzenBreadCrumbItem Path=@("/Patients/"+id) Text="Patients" />
+                }
             </RadzenBreadCrumb>
         </RadzenColumn>
     </RadzenRow>
-    <AuthorizeView Roles="Doctor">
+    <AuthorizeView Roles="Doctor,Admin">
         @if (isLoading)
         {
             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
@@ -58,6 +66,7 @@
 @code {
     bool isLoading = false;
     Radzen.DataGridGridLines GridLines = Radzen.DataGridGridLines.Default;
+    [Parameter] public string id { get; set; }
     IEnumerable<Patient> patients;
     [Inject]
     private IPatientServiceData _patientServiceData { get; set; }
@@ -69,9 +78,16 @@
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        var user = await ASP.GetAuthenticationStateAsync();
-        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
-        patients = await _patientServiceData.GetByDocId(Id.Value);
+        if (id == null)
+        {
+            var user = await ASP.GetAuthenticationStateAsync();
+            var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+            patients = await _patientServiceData.GetByDocId(Id.Value);
+        }
+        else
+        {
+            patients = await _patientServiceData.GetByDocId(id);
+        }
         isLoading = false;
 
     }

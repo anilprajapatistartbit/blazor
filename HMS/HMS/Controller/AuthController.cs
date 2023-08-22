@@ -31,6 +31,22 @@ namespace HMS.Controller
         }
         #endregion
 
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var val = await _loginservice.GetAll();
+                return StatusCode(StatusCodes.Status200OK, val);
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet("CheckId/{id}")]
         public async Task<IActionResult> CheckEmail(string id)
         {
@@ -117,6 +133,30 @@ namespace HMS.Controller
                 
               
                 return StatusCode(StatusCodes.Status200OK, login);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut("Status/{id}")]
+        public async Task<IActionResult> LoginUpdate(string id, [FromBody] bool status)
+        {
+            try
+            {
+
+                var login = await _loginservice.GetById(id);
+
+                if (login == null)
+                {
+                    throw new Exception("User not found");
+                }
+                login.IsActive= status;
+
+                var res = await _loginservice.Update(login);
+                return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)

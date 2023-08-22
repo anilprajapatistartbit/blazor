@@ -14,6 +14,8 @@ namespace HMS.Service.Interfaces
         Task<IEnumerable<Patient>> GetAllByDocId(string Id);
         Task<Patient> GetById(string Id);
         Task<Patient> Update(Patient patient);
+        Task<int> TotalCount();
+        Task<IEnumerable<Patient>> GetAll();
     }
 
 }

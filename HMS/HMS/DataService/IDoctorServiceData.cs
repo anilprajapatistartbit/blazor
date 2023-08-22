@@ -10,6 +10,8 @@ namespace HMS.DataService
         Task<IEnumerable<Doctor>> GetBySearch(int? id);
         Task<Doctor> GetDocById(string id);
         Task<StatusResponse<Doctor>> Update(Doctor data);
+        Task<DashboardResponse<Doctor>> GetDashboardById(string id, string type);
+        Task<IEnumerable<Doctor>> GetAll();
 
     }
 }

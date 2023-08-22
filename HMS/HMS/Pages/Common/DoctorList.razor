@@ -1,0 +1,107 @@
+﻿@page "/doctors"
+@attribute [Authorize(Roles = "Admin")]
+@inject AuthenticationStateProvider ASP;
+@inject TooltipService tooltipService;
+@inject DialogService DialogService
+
+<PageTitle>Doctors</PageTitle>
+<RadzenCard class="rz-mx-0">
+    <AuthorizeView Roles="Admin">
+        <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
+
+            <RadzenColumn Size="12" class="rz-text-align-center">
+
+                <RadzenBreadCrumb>
+
+                    <RadzenBreadCrumbItem Path="" Text="" />
+                    <RadzenBreadCrumbItem Path="/doctors" Text="Doctors" />
+
+                </RadzenBreadCrumb>
+
+            </RadzenColumn>
+        </RadzenRow>
+        @if (isLoading)
+        {
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Class="rz-mt-12" Gap="2rem">
+
+                <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Success" Value="100" Size="ProgressBarCircularSize.Medium" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </RadzenStack>
+            <RadzenText TagName="TagName.P" Style="font-size: 0.7rem;" Class="rz-mb-12" TextAlign="TextAlign.Center"><em>Please wait...</em></RadzenText>
+        }
+        else
+        {
+
+            <RadzenRow AlignItems="AlignItems.Center" class="rz-mt-6" Style="width:100%;">
+                <RadzenText TextStyle="TextStyle.H6" class="rz-mb-4 rz-mt-6"><strong>Doctor List</strong></RadzenText>
+
+                <RadzenDataList AllowVirtualization=@allowVirtualization Style="@(allowVirtualization ? "height:400px;overflow:auto;" : "")"
+                            WrapItems="@(!allowVirtualization)" AllowPaging="@(!allowVirtualization)"
+                            Data="@doctors" TItem="Doctor" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+                    <Template Context="doctor">
+                        <RadzenCard Style="width: 100%; padding: 0;">
+                            <RadzenRow Gap="0">
+                                <RadzenColumn Size="12" SizeLG="3" SizeMD="3" SizeXL="3" Class="rz-p-4 product-title">
+                                    <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-secondary">@(doctor.FirstName)@(doctor.MiddleName == null ? " " : " " + doctor.MiddleName + " ")@(doctor.LastName)</RadzenText>
+                                        <RadzenText TextStyle="TextStyle.Body2">@(doctor.Dob.HasValue ? doctor.Dob.Value.ToString("yyyy-dd-MM") : "")</RadzenText>
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeLG="7" SizeMD="7" SizeXL="7" Class="rz-p-4">
+                                        <RadzenRow Gap="0">
+                                            <RadzenColumn Size="12" SizeMD="6" SizeLG="2">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Degree</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body2">@(doctor.Qualification.ToUpper())</RadzenText>
+                                            </RadzenColumn>
+                                            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Experiance</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body2">@(doctor.Experience) Year</RadzenText>
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                                            <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Treated Patient</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
+                                            <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Total Appointments</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+
+                                        </RadzenColumn>
+
+                                    </RadzenRow>
+                                </RadzenColumn>
+                                <RadzenColumn Size="12" SizeLG="2" SizeMD="2" SizeXL="2" Class="rz-p-4 rz-text-align-center">
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+                                        <RadzenButton Icon="masks" Style="width: 100%" class="rz-m-2" MouseEnter="@(args => ShowTooltip(args,"Patients"))" Click="@(args => GotoUrl("/Patients/"+doctor.Id))" />
+                                        <RadzenButton Icon="local_hospital" Style="width: 100%" class="rz-m-2" MouseEnter="@(args => ShowTooltip(args,"Appointments"))" Click="@(args => GotoUrl("/Patients/Appointments/"+doctor.Id))" />
+                                    </RadzenStack>
+
+
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </RadzenCard>
+                    </Template>
+                </RadzenDataList>
+            </RadzenRow>
+        }
+    </AuthorizeView>
+
+</RadzenCard>
+
+@code {
+    IEnumerable<Doctor> doctors;
+    bool allowVirtualization = false;
+    bool isLoading = false;
+    [Inject]
+    private IDoctorServiceData _doctorServiceData { get; set; }
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+    void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        doctors = await _doctorServiceData.GetAll();
+        isLoading = false;
+    }
+    void GotoUrl(string url)
+    {
+        navigationManager.NavigateTo(url);
+    }
+}

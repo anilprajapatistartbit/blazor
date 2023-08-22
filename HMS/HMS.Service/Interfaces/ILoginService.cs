@@ -14,6 +14,7 @@ namespace HMS.Service.Interfaces
         Task<Login> CheckEmailId(string id);
         Task<Login> GetByIdWithType(string id,string type);
         Task<Login> Update(Login doctor);
+        Task<IEnumerable<Login>> GetAll();
 
     }
 }

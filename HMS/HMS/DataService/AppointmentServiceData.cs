@@ -58,7 +58,7 @@ namespace HMS.DataService
                 return new StatusResponse<Appointment>() { IsSuccess = false, Value = null, Message = "Failed to update appointment" };
             }
         }
-        public async Task<DashboardResponse> GetDashboardData(string Id, string type)
+        public async Task<DashboardResponse<Appointment>> GetDashboardData(string Id, string type)
         {
             var appointment = await _httpClient.GetFromJsonAsync<IEnumerable<Appointment>>("api/Appointment/GetListById/" + Id + "/" + type);
             var patient = await _httpClient.GetFromJsonAsync<IEnumerable<Patient>>("api/Patient/GetByDocId/" + Id);
@@ -67,7 +67,8 @@ namespace HMS.DataService
             var totalpatient = patient.Count();
             var date = DateTime.Today;
             var todaysappointment = appointment.Where(s => s.Status.ToLower() != "cancelled" && s.AppointmentDate.Month == date.Month && s.AppointmentDate.Year == date.Year && s.AppointmentDate.Date == date.Date);
-            return new DashboardResponse() { TodaysAppointment = todaysappointment.Count(), TotalPatient = totalpatient ,TotalAppointment = totalappointment ,PendingAppointment = pendingappointment,appointments = todaysappointment};
+            return new DashboardResponse<Appointment>() { TodaysAppointment = todaysappointment.Count(), TotalPatient = totalpatient ,TotalAppointment = totalappointment ,PendingAppointment = pendingappointment,
+                list= todaysappointment};
 
         }
         public async Task<IEnumerable<Appointment>> GetAppointments(string Id, string type, DateTime date)

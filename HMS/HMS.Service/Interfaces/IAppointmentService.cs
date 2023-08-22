@@ -14,6 +14,7 @@ namespace HMS.Service.Interfaces
         Task<Appointment> GetById(string Id);
         Task<IEnumerable<Appointment>> GetByPatientId(string Id);
         Task<IEnumerable<Appointment>> GetByDoctorId(string Id);
+        Task<IEnumerable<Appointment>> GetAll();
 
 
 

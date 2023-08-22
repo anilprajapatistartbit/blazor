@@ -87,6 +87,18 @@ namespace HMS.Service.Implementations
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Login>> GetAll()
+        {
+            try
+            {
+                return (await _unitOfWork.Logins.GetData()).OrderBy(x => x.Name);
+            }
+            catch
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

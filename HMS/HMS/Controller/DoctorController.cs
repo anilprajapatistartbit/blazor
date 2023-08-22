@@ -41,6 +41,20 @@ namespace HMS.Controller
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet("Count")]
+        public async Task<IActionResult> GetCount()
+        {
+            try
+            {
+                var res = await _doctorservice.TotalCount();
+                return StatusCode(StatusCodes.Status200OK, res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

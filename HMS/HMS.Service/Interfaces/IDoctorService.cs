@@ -15,5 +15,6 @@ namespace HMS.Service.Interfaces
         Task<IEnumerable<Doctor>> GetAll();
         Task<Doctor> GetByEmailId(string id);
         Task<IEnumerable<Doctor>> GetByDepartment(int id);
+        Task<int> TotalCount();
     }
 }

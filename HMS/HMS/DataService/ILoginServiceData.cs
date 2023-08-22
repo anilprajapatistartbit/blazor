@@ -10,5 +10,7 @@ namespace HMS.DataService
         Task<Login> Login(LoginModal value);
         Task<bool> CheckEmail(string id);
         Task<StatusResponse<Login>> PasswordLoginChange(PasswordChange passwordChange);
+        Task<IEnumerable<Login>> GetAll();
+        Task<StatusResponse<Login>> LoginIsActive(string id,bool status);
     }
 }

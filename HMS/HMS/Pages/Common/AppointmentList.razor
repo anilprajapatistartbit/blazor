@@ -1,22 +1,41 @@
 ﻿@page "/Appointments"
+@page "/patients/Appointments/{id}"
 @attribute [Authorize]
 <PageTitle>Appointments</PageTitle>
 <RadzenCard class="rz-mx-0">
     <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Normal" Gap="1rem">
         <RadzenColumn Size="12" class="rz-text-align-center">
-            <RadzenBreadCrumb>
-                <RadzenBreadCrumbItem Path="" Text="" />
-                <RadzenBreadCrumbItem Path="/appointments" Text="Appointments" />
-            </RadzenBreadCrumb>
+            <AuthorizeView Roles="Admin">
+                <RadzenBreadCrumb>
+                    @if (id == null)
+                    {
+                        <RadzenBreadCrumbItem Path="" Text="" />
+                        <RadzenBreadCrumbItem Path="/appointments" Text="Appointments" />
+                    }
+                    else
+                    {
+                        <RadzenBreadCrumbItem Path="" Text="" />
+                        <RadzenBreadCrumbItem Path=@("/patients/"+@id) Text="Patient" />
+                        <RadzenBreadCrumbItem Path=@("/patients/Appointments/"+@id) Text="Appointments" />
+                    }
+                    
+                </RadzenBreadCrumb>
+            </AuthorizeView>
+            <AuthorizeView Roles="Doctor,Patient">
+                <RadzenBreadCrumb>
+                    <RadzenBreadCrumbItem Path="" Text="" />
+                    <RadzenBreadCrumbItem Path="/appointments" Text="Appointments" />
+                </RadzenBreadCrumb>
+            </AuthorizeView>
         </RadzenColumn>
     </RadzenRow>
-    <AuthorizeView Roles="Doctor">
-        <HMS.Pages.Doctor.DoctorAppointmentList/>
+    <AuthorizeView Roles="Doctor,Admin">
+        <HMS.Pages.Doctor.DoctorAppointmentList DocId="@id" />
     </AuthorizeView>
     <AuthorizeView Roles="Patient">
         <HMS.Pages.Patient.PatientAppointmentList/>
     </AuthorizeView>
     </RadzenCard>
 @code {
-   
+    [Parameter] public string id { get; set; }
 }

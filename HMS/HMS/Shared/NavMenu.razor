@@ -10,10 +10,20 @@
         </Authorized>
 
     </AuthorizeView>
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="/" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Doctors" Icon="local_hospital" Path="doctors" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Patients" Icon="masks" Path="Patients" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Appointments" Icon="local_hospital" Path="Appointments" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Register" Icon="app_registration" Path="register" Match="NavLinkMatch.All" />
+        </Authorized>
+
+    </AuthorizeView>
     <AuthorizeView Roles="Patient">
         <Authorized>
             <RadzenPanelMenuItem Text="Book Appointtment" Icon="work_history" Path="bookappointment" Match="NavLinkMatch.All" />
-            <RadzenPanelMenuItem Text="Appointtments" Icon="local_hospital" Path="Appointments" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Appointments" Icon="local_hospital" Path="Appointments" Match="NavLinkMatch.All" />
         </Authorized>
 
     </AuthorizeView>

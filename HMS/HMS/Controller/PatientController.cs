@@ -1,4 +1,5 @@
 ﻿using HMS.Model.DatabaseModel;
+using HMS.Service.Implementations;
 using HMS.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +26,33 @@ namespace HMS.Controller
 
 
         #region Actions
+        [HttpGet("Count")]
+        public async Task<IActionResult> GetCount()
+        {
+            try
+            {
+                var res = await _patientService.TotalCount();
+                return StatusCode(StatusCodes.Status200OK, res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet("GetByDocId/{Id}")]
         public async Task<IActionResult> GetAllByDoc(string Id)
         {
             try
             {
 
+                var login = await _loginService.GetById(Id);
+                if(login != null && login.LoginType.ToLower()=="admin")
+                {
+                    var result = await _patientService.GetAll();
+                    return StatusCode(StatusCodes.Status200OK, result);
+                }
                 var res = await _patientService.GetAllByDocId(Id);
                 return StatusCode(StatusCodes.Status200OK, res);
 

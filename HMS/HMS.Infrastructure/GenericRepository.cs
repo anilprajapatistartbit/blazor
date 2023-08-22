@@ -160,6 +160,22 @@ namespace HMS.Infrastructure
         }
         #endregion
 
+        #region Count
+        public async Task<int> CountAll()
+        {
+            try
+            {
+                var c = await _dbSet.CountAsync();
+                return c;
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+        #endregion
+
         #endregion
     }
 }
