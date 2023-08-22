@@ -31,7 +31,8 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 ![screencapture-192-168-1-133-Appointments-2023-08-22-16_41_23](https://github.com/sb-238/blazor/assets/121869921/e755e666-bc9f-4783-b61c-c04071b48859)
 
 ### Register Page
-![screencapture-192-168-1-133-5000-register-2023-08-18-14_07_46](https://github.com/anilprajapatistartbit/blazor/assets/121869921/8dbfa80e-fe46-4b1a-b10c-8e02ef11cc31)
+![screencapture-192-168-1-133-register-2023-08-22-17_47_23](https://github.com/anilprajapatistartbit/blazor/assets/121869921/0be71de5-bf35-4df5-9c97-1ec80ac232ef)
+
 
 ### Doctor Registration Page
 ![screencapture-192-168-1-133-5000-Register-doctor-2023-08-18-14_09_00](https://github.com/anilprajapatistartbit/blazor/assets/121869921/8bdb96cb-a81e-4db7-a259-7ef264aabb8c)
