@@ -2,19 +2,33 @@
 This project is an Online Appointment System for Doctors, built using Blazor Server and powered by the Radzen UI Component library. The application streamlines the process of scheduling appointments between patients and doctors, enhancing efficiency and patient care.  
 
 ## Technolodgy Used
-**.NET Core**: Framework for building cross-platform applications.
+[**.NET Core**](https://learn.microsoft.com/en-us/dotnet/core/introduction): Framework for building cross-platform applications.
 
-**Blazor Server**: Server-side Blazor framework for interactive web apps.
+[**Blazor Server**](https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-7.0#blazor-server): Server-side Blazor framework for interactive web apps.
 
-**Radzen UI Components**: Pre-built UI components for Blazor apps.
+[**Radzen UI Components**](https://blazor.radzen.com/): Pre-built UI components for Blazor apps.
 
 ### Pre-Requisites:
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com/vs/community/)
 - [pgAdmin 4](https://www.pgadmin.org/download/)
 
 ## Interface
-### Login Page
-![screencapture-192-168-1-133-5000-Accountlogin-2023-08-18-14_06_19](https://github.com/anilprajapatistartbit/blazor/assets/121869921/7eea4a7a-5a35-40e4-a4d3-8071dd8b240c)
+
+## Admin's view
+### Home Page
+![screencapture-192-168-1-133-2023-08-22-17_01_49](https://github.com/sb-238/blazor/assets/121869921/30f99eed-b088-4b58-a66f-477c31593df4)
+
+![screencapture-192-168-1-133-Patients-d3e6a67c-02fa-4b14-b1e5-89968b4015e7-2023-08-22-16_40_46](https://github.com/sb-238/blazor/assets/121869921/a6714fb2-2843-4e3c-a0ce-ab76363c44a0)
+![screencapture-192-168-1-133-Patients-Appointments-d3e6a67c-02fa-4b14-b1e5-89968b4015e7-2023-08-22-16_40_57](https://github.com/sb-238/blazor/assets/121869921/e3232a8d-9317-46af-8386-99652423a580)
+
+### Patient Page
+![screencapture-192-168-1-133-Patients-2023-08-22-16_41_15](https://github.com/sb-238/blazor/assets/121869921/63aacbf3-3b30-4ff7-bee0-4a2cc0ad021d)
+
+### Doctor Page
+![screencapture-192-168-1-133-doctors-2023-08-22-16_41_08](https://github.com/sb-238/blazor/assets/121869921/8f195f51-3755-4587-9dfa-cd24983265c1)
+
+### Appointment Page
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_41_23](https://github.com/sb-238/blazor/assets/121869921/e755e666-bc9f-4783-b61c-c04071b48859)
 
 ### Register Page
 ![screencapture-192-168-1-133-5000-register-2023-08-18-14_07_46](https://github.com/anilprajapatistartbit/blazor/assets/121869921/8dbfa80e-fe46-4b1a-b10c-8e02ef11cc31)
@@ -24,41 +38,61 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 
 ###  Patient Registration Page
 ![screencapture-192-168-1-133-5000-Register-patient-2023-08-18-14_10_15](https://github.com/anilprajapatistartbit/blazor/assets/121869921/dd7add22-e09b-465b-a5ec-212307a63fcd)
+### Login Page
+![screencapture-192-168-1-133-5000-Accountlogin-2023-08-18-14_06_19](https://github.com/anilprajapatistartbit/blazor/assets/121869921/7eea4a7a-5a35-40e4-a4d3-8071dd8b240c)
+
+
 
 ## Doctor's view
 
 ### Home Page
-![screencapture-192-168-1-133-5000-2023-08-18-14_14_28](https://github.com/anilprajapatistartbit/blazor/assets/121869921/ab8d5abe-4b1b-413b-a7b0-377cd4d73152)
+![screencapture-192-168-1-133-2023-08-22-16_26_06](https://github.com/sb-238/blazor/assets/121869921/55ec8a80-41fb-41a3-a87b-b7a26722d3d7)
+
+
 
 ### Appointments Page
-![screencapture-192-168-1-133-5000-Appointments-2023-08-18-14_11_49](https://github.com/anilprajapatistartbit/blazor/assets/121869921/bfac4c8e-e241-4ab9-884a-76f074a44a23)
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_28_02](https://github.com/sb-238/blazor/assets/121869921/abc109f2-f6b1-4fd4-8e01-bf5bf4addc48)
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_28_15](https://github.com/sb-238/blazor/assets/121869921/4cfbe8a2-3208-4ab5-bedf-b84f459db38a)
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_29_13](https://github.com/sb-238/blazor/assets/121869921/a2b8844d-1e00-49cb-817f-7cf948aef7c8)
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_30_31](https://github.com/sb-238/blazor/assets/121869921/e763535d-66f9-41dc-99b9-c2ad0c456f1a)
+
+
+
 
 ### Patients Page
-![screencapture-192-168-1-133-5000-Patients-2023-08-18-14_14_15](https://github.com/anilprajapatistartbit/blazor/assets/121869921/ff4524c4-e1e4-4b9d-8d21-bede24d7e902)
+![screencapture-192-168-1-133-Patients-2023-08-22-16_30_57](https://github.com/sb-238/blazor/assets/121869921/8265d0d0-6216-4da0-9dfc-3f1cd3395026)
+![screencapture-192-168-1-133-Patients-2023-08-22-16_31_11](https://github.com/sb-238/blazor/assets/121869921/f55ca70d-7a71-439e-b26c-f151dc37e345)
+
 
 ### My Profile Page
-![screencapture-192-168-1-133-5000-myprofile-2023-08-18-14_13_43](https://github.com/anilprajapatistartbit/blazor/assets/121869921/eab9c22f-2aa1-494f-89a8-365b713e9b04)
-
-### Profile Edit page
-![screencapture-192-168-1-133-5000-Editprofile-2023-08-18-14_16_16](https://github.com/anilprajapatistartbit/blazor/assets/121869921/d6c99665-8f40-4b60-b3e1-0b5f9c21f912)
-
-## Patient's View
-
-### Book Appointment Page
-![screencapture-192-168-1-133-5000-bookappointment-2023-08-18-14_18_57](https://github.com/anilprajapatistartbit/blazor/assets/121869921/6d0dd578-3210-4a1b-8eb6-f3541ac9a654)
-
-### Appointments Page
-![screencapture-192-168-1-133-5000-Appointments-2023-08-18-14_19_23](https://github.com/anilprajapatistartbit/blazor/assets/121869921/6f52303e-ff09-4c23-bb0f-f759750fb7b2)
-
-### My Profile Page
-![screencapture-192-168-1-133-5000-myprofile-2023-08-18-14_19_52](https://github.com/anilprajapatistartbit/blazor/assets/121869921/0e214a34-7d53-4340-9d1c-028c0350722c)
+![screencapture-192-168-1-133-myprofile-2023-08-22-16_31_52](https://github.com/sb-238/blazor/assets/121869921/c1260447-d662-43be-a233-b781d19bb064)
 
 
 ### Profile Edit page
 ![screencapture-192-168-1-133-5000-Editprofile-2023-08-18-14_20_10](https://github.com/anilprajapatistartbit/blazor/assets/121869921/3a708f7b-f5e9-4b90-ad87-e9f6d559a3e0)
 
+
+## Patient's View
+
+### Book Appointment Page
+![screencapture-192-168-1-133-bookappointment-2023-08-22-16_35_52](https://github.com/sb-238/blazor/assets/121869921/9486c6a4-c405-4956-9e2c-872d49f858c0)
+
+
+
+### Appointments Page
+![screencapture-192-168-1-133-Appointments-2023-08-22-16_36_02](https://github.com/sb-238/blazor/assets/121869921/90987012-f9ca-40ed-9534-93167f0a6132)
+
+
+### My Profile Page
+![screencapture-192-168-1-133-myprofile-2023-08-22-16_37_06](https://github.com/sb-238/blazor/assets/121869921/4afc02bd-c91e-460a-a840-165713d6cf60)
+
+
+### Profile Edit page
+![screencapture-192-168-1-133-Editprofile-2023-08-22-16_37_14](https://github.com/sb-238/blazor/assets/121869921/dd3b585a-c8c5-4fbd-afcd-e00c531c7eeb)
+
 ## Password Change
-![screencapture-192-168-1-133-5000-changepassword-2023-08-18-14_21_36](https://github.com/anilprajapatistartbit/blazor/assets/121869921/494a9d62-7e39-4b18-87c0-18f80f68bb71)
+![screencapture-192-168-1-133-changepassword-2023-08-22-16_37_23](https://github.com/sb-238/blazor/assets/121869921/4f9acf2b-4426-4a8a-a659-dfa62d88428f)
+
 
 
 ## Functionalities Implemented:
