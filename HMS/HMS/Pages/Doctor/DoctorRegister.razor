@@ -55,18 +55,6 @@
                                 <RadzenRequiredValidator Component="Dob" Text="Date of birth is required" Popup=@false />
 
                             </RadzenColumn>
-                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
-                                <RadzenLabel Text="Password" /><span class="rz-color-danger">*</span>
-                                <RadzenPassword Name="Password" @bind-Value=@Password Style="width: 100%;display:block" />
-                                <RadzenRequiredValidator Component="Password" Text="Enter password" Popup=@false />
-
-                            </RadzenColumn>
-                            <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
-                                <RadzenLabel Text="Repeat Password" /><span class="rz-color-danger">*</span>
-                                <RadzenPassword Name="RepeatPassword" @bind-Value=@RepeatPassword Style="width: 100%;display:block" />
-                                <RadzenRequiredValidator Component="RepeatPassword" Text="Repeat your password" Popup=@false />
-                                <RadzenCompareValidator Visible=@(!string.IsNullOrEmpty(RepeatPassword)) Value=@Password Component="RepeatPassword" Text="Passwords should be the same" Popup=@false />
-                            </RadzenColumn>
                         </RadzenRow>
                     </RadzenStack>
                 </RadzenFieldset>
@@ -186,8 +174,6 @@
 @code {
     Doctor doctor = new();
     bool isLoading = false;
-    string Password = "";
-    string RepeatPassword = "";
     private Department[] departments { get; set; }
     [Inject]
     private IDepatmentServiceData _depatmentService { get; set; }
@@ -221,11 +207,8 @@
         isLoading = false;
         if (res.IsSuccess)
         {
-            byte[] salt;
-            var hash = PasswordHelper.HashPasword(Password, out salt);
-            var hexstring = Convert.ToHexString(salt);
             var middle = (res.Value.MiddleName == null || res.Value.MiddleName == "") ? " " : res.Value.MiddleName+" ";
-            Login login = new() { Id = res.Value.Id, HashPassword = hash, SaltPassword = hexstring, IsActive = true, LoginType = "Doctor", Email = res.Value.Email, Name = $"{res.Value.FirstName}{middle}{res.Value.LastName}" };
+            Login login = new() { Id = res.Value.Id, IsActive = true, LoginType = "Doctor",HashPassword="q",SaltPassword="q", Email = res.Value.Email, Name = $"{res.Value.FirstName}{middle}{res.Value.LastName}" };
             var val = await _loginService.Create(login);
             isLoading = false;
             if (val.IsSuccess)
@@ -238,7 +221,7 @@
             }
             else
             {
-                NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = res.Message, Duration = 3000 };
+                NotificationMessage message = new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = "Failed to add login dettail", Duration = 3000 };
                 NotificationService.Notify(message);
                 isLoading = false;
             }
@@ -255,8 +238,6 @@
     void Reset()
     {
         isLoading = true;
-        Password = "";
-        RepeatPassword = "";
         doctor = new Doctor();
         doctor.Dob = DateTime.Today.AddYears(-18);
         isLoading = false;

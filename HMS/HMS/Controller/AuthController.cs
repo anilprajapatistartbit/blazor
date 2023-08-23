@@ -2,10 +2,12 @@
 using HMS.Model.DatabaseModel;
 using HMS.Model.Request;
 using HMS.Service.Interfaces;
+using HMS.Service.SmtpService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -20,14 +22,16 @@ namespace HMS.Controller
         private readonly ILoginService _loginservice;
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
+        private readonly IEmailService _emailService;
         #endregion
 
         #region Constructor
-        public AuthController(ILoginService loginService, IDoctorService doctorService, IPatientService patientService)
+        public AuthController(ILoginService loginService, IDoctorService doctorService, IPatientService patientService,IEmailService emailService)
         {
             _loginservice = loginService;
             _doctorService = doctorService;
             _patientService = patientService;
+            _emailService = emailService;
         }
         #endregion
 
@@ -74,6 +78,18 @@ namespace HMS.Controller
         {
             try
             {
+                if (data.LoginType.ToLower() == "doctor")
+                {
+                    var password = Guid.NewGuid().ToString().Substring(0, Guid.NewGuid().ToString().IndexOf("-"));
+                    byte[] salt;
+                    var hash = PasswordHelper.HashPasword(password, out salt);
+                    var hexstring = Convert.ToHexString(salt);
+                    data.HashPassword = hash;
+                    data.SaltPassword = hexstring;
+
+                    var body = "<!DOCTYPE html><html><head><style>   body {font - family: Arial, sans-serif;    background-color: #f4f4f4;    margin: 0;    padding: 0;  }  .container {max - width: 600px;    margin: 0 auto;    padding: 20px;    background-color: #ffffff;    border-radius: 5px;    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  }  .header {text - align: center;    margin-bottom: 20px;  }  .message {padding: 20px;    background-color: #f9f9f9;    border-radius: 5px;  }  .button {display: inline-block;    padding: 10px 20px;    background-color: #007bff;    color: #ffffff;    text-decoration: none;    border-radius: 5px;  }</style></head><body><div class=\"container\">  <div class=\"header\">    <h1>Your Login Password</h1>  </div>  <div class=\"message\">    <p>Hello <strong>" + data.Name + ",</strong></p>   <p>Here is your  Email:</p><p><strong>" + data.Email + "</strong></p>   <p>Here is your  password:</p>    <p><strong>" + password + "</strong></p>    <p>Please make sure to change your password after logging in for security reasons.</p>    <p>If you have any questions or concerns, feel free to contact our support team.</p>    <p>Thank you!</p>  </div>  <div class=\"footer\">    <p>This is an automated email. Please do not reply.</p>  </div></div></body></html>";
+                    var email = await _emailService.SendEmailAsync(new EmailMessage() { Body = body, IsHtml = true, ReceiversEmail = data.Email, Subject = "Login Password" });
+                }
                 var res = await _loginservice.Insert(data);
                 return StatusCode(StatusCodes.Status200OK, res);
 
@@ -130,8 +146,7 @@ namespace HMS.Controller
                 {
                     throw new Exception("User not found");
                 }
-                
-              
+
                 return StatusCode(StatusCodes.Status200OK, login);
 
             }

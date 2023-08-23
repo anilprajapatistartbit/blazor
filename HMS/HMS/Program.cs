@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.JSInterop;
+using HMS.Service.SmtpService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,11 @@ builder.Services.AddScoped<ILoginServiceData, LoginServiceData>();
 builder.Services.AddScoped<IPatientServiceData, PatientServiceData>();
 builder.Services.AddScoped<IAppointmentServiceData, AppointmentServiceData>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();   
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
