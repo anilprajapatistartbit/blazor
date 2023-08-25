@@ -35,13 +35,18 @@ This project is an Online Appointment System for Doctors, built using Blazor Ser
 
 
 ### Doctor Registration Page
-![screencapture-192-168-1-133-5000-Register-doctor-2023-08-18-14_09_00](https://github.com/anilprajapatistartbit/blazor/assets/121869921/8bdb96cb-a81e-4db7-a259-7ef264aabb8c)
+![screencapture-192-168-1-133-Register-doctor-2023-08-25-12_15_39](https://github.com/anilprajapatistartbit/blazor/assets/121869921/28385fdd-c7c7-4744-b4cb-4eed213168ee)
+
 
 ###  Patient Registration Page
 ![screencapture-192-168-1-133-5000-Register-patient-2023-08-18-14_10_15](https://github.com/anilprajapatistartbit/blazor/assets/121869921/dd7add22-e09b-465b-a5ec-212307a63fcd)
 ### Login Page
-![screencapture-192-168-1-133-5000-Accountlogin-2023-08-18-14_06_19](https://github.com/anilprajapatistartbit/blazor/assets/121869921/7eea4a7a-5a35-40e4-a4d3-8071dd8b240c)
+![screencapture-192-168-1-133-Accountlogin-2023-08-25-12_13_53](https://github.com/anilprajapatistartbit/blazor/assets/121869921/cbc07052-afd9-4621-94d4-a537b61d9ebb)
 
+
+## Forgot Password Page
+![screencapture-192-168-1-133-forgotpassword-2023-08-25-12_14_07](https://github.com/anilprajapatistartbit/blazor/assets/121869921/0402785e-71a0-4c41-9fd5-2dff6bf93391)
+![screencapture-192-168-1-133-forgotpassword-2023-08-25-12_14_34](https://github.com/anilprajapatistartbit/blazor/assets/121869921/f29c727f-288e-4e5f-8028-5a2b1651d716)
 
 
 ## Doctor's view
