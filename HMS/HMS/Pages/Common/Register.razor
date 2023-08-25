@@ -13,7 +13,7 @@
     </RadzenRow>
     <RadzenRow class="rz-mt-6">
         <RadzenColumn Size="12" SizeMD="6" SizeLG="6" SizeXL="6" class="rz-text-align-center">
-            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto registerbtn" MouseEnter="@(args => ShowTooltip(args,"Register as Doctor",new TooltipOptions(){ Position = TooltipPosition.Top }))" @onclick=@(args => navigateon("doctor")) Style="max-width: 420px">
+            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto registerbtn" MouseEnter="@(args => ShowTooltip(args,"Register as Doctor",new TooltipOptions(){ Position = TooltipPosition.Top }))" MouseLeave="@(args => tooltipService.Close())" @onclick=@(args => navigateon("doctor")) Style="max-width: 420px">
                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
                     <RadzenImage Path="images/doctor.jpeg" Style="width: 100%; height: 100%;" />
                     
@@ -22,8 +22,8 @@
             </RadzenCard>
 
         </RadzenColumn>
-        <RadzenColumn Size="12" SizeMD="6" SizeLG="6" SizeXL="6" class="rz-text-align-center">
-            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto registerbtn" @onclick=@(args => navigateon("patient")) MouseEnter="@(args => ShowTooltip(args,"Register as Patient",new TooltipOptions(){ Position = TooltipPosition.Top }) )" Style="max-width: 420px">
+        <RadzenColumn Size="12" SizeMD="6" SizeLG="6" SizeXL="6" class="rz-text-align-center"> 
+            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto registerbtn" @onclick=@(args => navigateon("patient")) MouseEnter="@(args => ShowTooltip(args,"Register as Patient",new TooltipOptions(){ Position = TooltipPosition.Top }) )" MouseLeave="@(args => tooltipService.Close())" Style="max-width: 420px">
                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
                     <RadzenImage Path="images/patient.jpeg" Style="width: 100%; height: 100%;" />
                     

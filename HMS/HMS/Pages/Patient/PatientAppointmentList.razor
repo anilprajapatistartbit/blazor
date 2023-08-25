@@ -56,11 +56,11 @@ else
             <RadzenDataGridColumn TItem="Appointment" Title="Action" Frozen="true" Sortable="false" Property="Id" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
                 <Template Context="data">
                     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.4rem" JustifyContent="JustifyContent.Center">
-                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Appointment detail"))" Click="@(args => ViewAppointment(data.Id))" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Appointment detail"))" MouseLeave="@(args => tooltipService.Close())" Click="@(args => ViewAppointment(data.Id))" />
                         @if (data.Status != "Closed" && data.Status != "Cancelled")
                         {
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"cancel"))" Click="@(args => OpenDialog(data,"Cancelled"))" />
-                            <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="restart_alt" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Reschedule"))" Click="@(args => OpenDialog(data,"Reschedule"))" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"cancel"))" MouseLeave="@(args => tooltipService.Close())" Click="@(args => OpenDialog(data,"Cancelled"))" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="restart_alt" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Reschedule"))" MouseLeave="@(args => tooltipService.Close())" Click="@(args => OpenDialog(data,"Reschedule"))" />
                         }
 
                     </RadzenStack>

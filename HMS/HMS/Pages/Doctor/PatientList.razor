@@ -53,7 +53,7 @@
                     <RadzenDataGridColumn TItem="Patient" Title="Action" Property="Id" Frozen="true" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
                         <Template Context="data">
                             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center">
-                                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Patient detail"))" Click="@(args => ViewAppointment(data))" />
+                                <RadzenButton ButtonStyle="ButtonStyle.Info" Icon="visibility" Size="ButtonSize.ExtraSmall" MouseEnter="@(args => ShowTooltip(args,"Patient detail"))" MouseLeave="@(args => tooltipService.Close())" Click="@(args => ViewAppointment(data))" />
                             </RadzenStack>
                         </Template>
                     </RadzenDataGridColumn>

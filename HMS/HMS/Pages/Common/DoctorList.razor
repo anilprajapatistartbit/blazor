@@ -70,7 +70,7 @@
                                 <RadzenColumn Size="12" SizeLG="2" SizeMD="2" SizeXL="2" Class="rz-p-4 rz-text-align-center">
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
                                         <RadzenButton Icon="masks" Style="width: 100%" class="rz-m-2" MouseEnter="@(args => ShowTooltip(args,"Patients"))" Click="@(args => GotoUrl("/Patients/"+doctor.Id))" />
-                                        <RadzenButton Icon="local_hospital" Style="width: 100%" class="rz-m-2" MouseEnter="@(args => ShowTooltip(args,"Appointments"))" Click="@(args => GotoUrl("/Patients/Appointments/"+doctor.Id))" />
+                                        <RadzenButton Icon="local_hospital" Style="width: 100%" class="rz-m-2" MouseEnter="@(args => ShowTooltip(args,"Appointments"))" MouseLeave="@(args => tooltipService.Close())" Click="@(args => GotoUrl("/Patients/Appointments/"+doctor.Id))" />
                                     </RadzenStack>
 
 
