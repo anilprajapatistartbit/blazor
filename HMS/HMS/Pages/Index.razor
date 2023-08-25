@@ -299,12 +299,12 @@
                                         </RadzenColumn>
                                         <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
                                             <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Treated Patient</RadzenText>
-                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Body2">@(appointments.Where(s => s.DoctorId == doctor.Id).DistinctBy(s => s.PatientId).Count())</RadzenText>
 
                                         </RadzenColumn>
                                         <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
                                             <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Total Appointments</RadzenText>
-                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body2">@(appointments.Where(s=> s.DoctorId == doctor.Id).Count())</RadzenText>
 
                                         </RadzenColumn>
 
@@ -349,6 +349,8 @@
     DashboardResponse<HMS.Model.DatabaseModel.Doctor> dashboardAdmin = new();
     IEnumerable<Login> logins;
     IEnumerable<Appointment> appointments;
+  
+
     bool isLoading = false;
     [Inject]
     private IAppointmentServiceData _appointmentServiceData { get; set; }
@@ -375,6 +377,7 @@
         {
             dashboardAdmin = await _doctorServiceData.GetDashboardById(Id.Value,Role.Value);
             logins = await _loginServiceData.GetAll();
+            appointments = await _appointmentServiceData.GetAllById(Id.Value, Role.Value);
         }
         else
 

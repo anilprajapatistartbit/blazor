@@ -56,12 +56,12 @@
                                         </RadzenColumn>
                                         <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
                                             <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Treated Patient</RadzenText>
-                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Body2">@(appointments.Where(s=>s.DoctorId == doctor.Id).DistinctBy(s=>s.PatientId).Count())</RadzenText>
 
                                         </RadzenColumn>
                                         <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
                                             <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0">Total Appointments</RadzenText>
-                                            <RadzenText TextStyle="TextStyle.Body2">N/A</RadzenText>
+                                            <RadzenText TextStyle="TextStyle.Body2" >@(appointments.Where(s=>s.DoctorId == doctor.Id).Count())</RadzenText>
 
                                         </RadzenColumn>
 
@@ -88,16 +88,28 @@
 @code {
     IEnumerable<Doctor> doctors;
     bool allowVirtualization = false;
+    IEnumerable<Appointment> appointments;
     bool isLoading = false;
     [Inject]
     private IDoctorServiceData _doctorServiceData { get; set; }
+    [Inject]
+    private IAppointmentServiceData _appointmentServiceData { get; set; }
     [Inject]
     private NavigationManager navigationManager { get; set; }
     void ShowTooltip(ElementReference elementReference, string message, TooltipOptions options = null) => tooltipService.Open(elementReference, message, options);
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
+        var user = await ASP.GetAuthenticationStateAsync();
+        if (!user.User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/Accountlogin");
+
+        }
+        var Id = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.UserData);
+        var Role = user.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Role);
         doctors = await _doctorServiceData.GetAll();
+        appointments = await _appointmentServiceData.GetAllById(Id.Value, Role.Value);
         isLoading = false;
     }
     void GotoUrl(string url)
