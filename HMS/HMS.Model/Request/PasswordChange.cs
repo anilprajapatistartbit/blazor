@@ -13,4 +13,10 @@ namespace HMS.Model.Request
 
         public string NewPassword { get; set; }
     }
+    public class ForgotPwd : PasswordChange
+    {
+        public string Otp { get; set; }
+        public string Email { get; set; }
+    }
+  
 }

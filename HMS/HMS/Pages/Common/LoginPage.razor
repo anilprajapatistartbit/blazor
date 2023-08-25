@@ -48,7 +48,7 @@
                         <RadzenRequiredValidator Component="LoginType" Text="LoginType is required" Popup=@false />
                     </RadzenColumn>
                 </RadzenRow>
-                <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
+                @*<RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
                     <RadzenColumn Size="4" SizeMD="4">
 
                     </RadzenColumn>
@@ -56,7 +56,7 @@
                         <RadzenSwitch @bind-Value=@login.IsRemember />
                         <RadzenLabel Text="Remember me" />
                     </RadzenColumn>
-                </RadzenRow>
+                </RadzenRow>*@
                 <RadzenRow AlignItems="AlignItems.Center" class="rz-mb-2">
                     <RadzenColumn Size="4" SizeMD="4">
 
@@ -64,7 +64,7 @@
                     <RadzenColumn Size="8" SizeMD="8">
                         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
                             <RadzenButton Size="ButtonSize.Medium" ButtonType="ButtonType.Submit" class="rz-button" IsBusy=@isLoading BusyText="Login..." Text="Login" Icon="login" ButtonStyle="ButtonStyle.Info" />
-                            @*<RadzenLink Path="/ForgotPassword" Text="Forgot Password?" Style="color:blue" />*@
+                        <RadzenLink Path="/forgotpassword" Text="Forgot Password?" Style="color:blue" />
                         </RadzenStack>
                     </RadzenColumn>
                 </RadzenRow>

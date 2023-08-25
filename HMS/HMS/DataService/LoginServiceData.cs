@@ -88,6 +88,26 @@ namespace HMS.DataService
                 return new StatusResponse<Login>() { IsSuccess = false, Value = null, Message = $"Failed to {message} user" };
             }
         }
+
+        public async Task<StatusResponse<Login>> SendOtp(string email)
+        {
+           return await _httpClient.GetFromJsonAsync<StatusResponse<Login>>("api/Auth/Sendotp/"+email);
+        }
+        public async Task<StatusResponse<Login>> ChangePassword(ForgotPwd forgot)
+
+        {
+            forgot.CurrentPassword = forgot.NewPassword;
+            var val = await _httpClient.PutAsJsonAsync<ForgotPwd>("api/Auth/ForgotPassword",forgot);
+          
+            if (val.IsSuccessStatusCode)
+            {
+                return new StatusResponse<Login>() { IsSuccess = true, Value = await val.ReadAsync<Login>(), Message = $"Password chnage successfully" };
+            }
+            else
+            {
+                return new StatusResponse<Login>() { IsSuccess = false, Value = null, Message = $"Failed to change password" };
+            }
+        }
         #endregion
     }
 }

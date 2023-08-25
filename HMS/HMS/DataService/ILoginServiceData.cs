@@ -12,5 +12,7 @@ namespace HMS.DataService
         Task<StatusResponse<Login>> PasswordLoginChange(PasswordChange passwordChange);
         Task<IEnumerable<Login>> GetAll();
         Task<StatusResponse<Login>> LoginIsActive(string id,bool status);
+        Task<StatusResponse<Login>> SendOtp(string email);
+        Task<StatusResponse<Login>> ChangePassword(ForgotPwd forgot);
     }
 }

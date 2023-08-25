@@ -1,6 +1,7 @@
 ﻿using HMS.Helper;
 using HMS.Model.DatabaseModel;
 using HMS.Model.Request;
+using HMS.Model.Response;
 using HMS.Service.Interfaces;
 using HMS.Service.SmtpService;
 using Microsoft.AspNetCore.Authentication;
@@ -180,6 +181,63 @@ namespace HMS.Controller
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("Sendotp/{email}")]
+        public async Task<IActionResult> SendOtp(string email)
+        {
+            try
+            {
+
+                var check = await _loginservice.SentForgotPasswrdOtp(email);
+                var data = new StatusResponse<Login>() { IsSuccess = true, Value = check, Message = $"Otp successfully send on {email}" };
+                if (check == null)
+                {
+                    data.IsSuccess = false;
+                    data.Value = new Login();
+                    data.Message = "User not found";
+                   
+                }
+                return StatusCode(StatusCodes.Status200OK, data);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("ForgotPassword")]
+        public async Task<IActionResult> SendFPOtp(ForgotPwd pwd)
+        {
+            try
+            {
+
+                var res = await _loginservice.GetById(pwd.UserId);
+                if (res == null)
+                {
+                    throw new Exception("User not found");
+                }
+                byte[] salt;
+                var hash = PasswordHelper.HashPasword(pwd.NewPassword, out salt);
+                var hexstring = Convert.ToHexString(salt);
+                res.HashPassword = hash;
+                res.SaltPassword = hexstring;
+                var val = await _loginservice.ChangePassword(res,pwd.Otp);
+                if (val == null)
+                {
+                    throw new Exception("Invalide Otp");
+                }
+                return StatusCode(StatusCodes.Status200OK, val);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
     }
 }
