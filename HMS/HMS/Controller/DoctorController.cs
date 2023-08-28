@@ -15,13 +15,15 @@ namespace HMS.Controller
         #region Fields
         private readonly IDoctorService _doctorservice;
         private readonly ILoginService _loginService;
+        private readonly ILogService _logService;
         #endregion
 
         #region Constructor
-        public DoctorController(IDoctorService doctorService, ILoginService loginService)
+        public DoctorController(IDoctorService doctorService, ILoginService loginService, ILogService logService)
         {
             _doctorservice = doctorService;
             _loginService = loginService;
+            _logService = logService;
         }
         #endregion
 
@@ -37,7 +39,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -51,7 +53,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -65,7 +67,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -79,6 +81,7 @@ namespace HMS.Controller
                 if (data != null)
                 {
                     var res = await _doctorservice.Insert(data);
+                    await _logService.Info("Doctor's registration successdully complete");
                     return StatusCode(StatusCodes.Status200OK, res);
                 }
 
@@ -87,7 +90,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -123,6 +126,8 @@ namespace HMS.Controller
                 login.Name = $"{doc.FirstName}{middle}{doc.LastName}";
                 var res = await _doctorservice.Update(doc);
                 var l = await _loginService.Update(login);
+                await _logService.Info("Doctor's information updated successdully");
+
                 return StatusCode(StatusCodes.Status200OK, res);
 
 
@@ -130,7 +135,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -144,7 +149,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

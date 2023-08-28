@@ -278,3 +278,6 @@ D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\obj\Debug\net6.0\refint\HMS.dll
 D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\obj\Debug\net6.0\HMS.pdb
 D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\obj\Debug\net6.0\HMS.genruntimeconfig.cache
 D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\obj\Debug\net6.0\ref\HMS.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\bin\Debug\net6.0\Log4Net\Log4Net.config
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\bin\Debug\net6.0\log4net.dll
+D:\Lakshmikant jangid\Repository\blazor\HMS\HMS\bin\Debug\net6.0\Microsoft.Extensions.Logging.Log4Net.AspNetCore.dll

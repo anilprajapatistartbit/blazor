@@ -13,12 +13,14 @@ namespace HMS.Controller
     {
         #region Fields
         private readonly IDepartmentService _departmentService;
+        private readonly ILogService _logService;
         #endregion
 
         #region Constructor
-        public DepartmentController(IDepartmentService departmentService)
+        public DepartmentController(IDepartmentService departmentService, ILogService logService)
         {
-            _departmentService = departmentService;
+            _departmentService = departmentService; 
+            _logService = logService;
         }
         #endregion
 
@@ -34,6 +36,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
+                 await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError ,ex.Message);
             }
         }
@@ -52,7 +55,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

@@ -12,9 +12,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.JSInterop;
 using HMS.Service.SmtpService;
+using log4net.Config;
+using FileInfo = System.IO.FileInfo;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddLog4Net("Log4Net/Log4Net.config");
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -51,11 +54,18 @@ builder.Services.AddScoped<IDoctorServiceData, DoctorServiceData>();
 builder.Services.AddScoped<ILoginServiceData, LoginServiceData>();
 builder.Services.AddScoped<IPatientServiceData, PatientServiceData>();
 builder.Services.AddScoped<IAppointmentServiceData, AppointmentServiceData>();
+builder.Services.AddSingleton<ILogService, LogService>();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddTransient<IEmailService, EmailService>();   
+builder.Services.AddTransient<IEmailService, EmailService>();
 
+
+#region log4netConfig
+
+log4net.GlobalContext.Properties["FilesPath"] = Path.Combine(Directory.GetCurrentDirectory(), builder.Configuration["Logfolder"]);
+XmlConfigurator.Configure(new FileInfo("Log4Net/Log4Net.config"));
+#endregion
 
 var app = builder.Build();
 

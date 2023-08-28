@@ -13,12 +13,14 @@ namespace HMS.Controller
     {
         #region Fields
         private readonly IAppointmentService _appointmentService;
+        private readonly ILogService _logService;
         #endregion
 
         #region Constructor
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService, ILogService logService)
         {
             _appointmentService = appointmentService;
+            _logService = logService;   
         }
         #endregion
 
@@ -29,11 +31,13 @@ namespace HMS.Controller
             try
             {
                 var res = await _appointmentService.Insert(appointment);
+               await _logService.Info("Appoinment added");
                 return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)
             {
+                await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -62,6 +66,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
+                await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -79,6 +84,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
+                await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -99,11 +105,13 @@ namespace HMS.Controller
                 val.AnalysisReport = NewData.AnalysisReport;
                 val.DoctorPrescription= NewData.DoctorPrescription;
                 var res = await _appointmentService.Update(val);
+                await _logService.Info("Apointment updated");
                 return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)
             {
+                await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

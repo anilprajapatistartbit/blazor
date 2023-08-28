@@ -14,6 +14,7 @@ namespace HMS.Controller
         #region Fields
         private readonly IPatientService _patientService;
         private readonly ILoginService _loginService;
+        private readonly ILogService _logService;
         #endregion
 
         #region Constructor
@@ -36,7 +37,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+               await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -61,7 +62,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+               await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -80,7 +81,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+               await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -94,6 +95,7 @@ namespace HMS.Controller
                 {
                     var res = await _patientService.Insert(data);
                     return StatusCode(StatusCodes.Status200OK, res);
+                    await _logService.Info("Patient registration successfully completed");
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -101,7 +103,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+               await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -130,12 +132,14 @@ namespace HMS.Controller
                 login.Name = $"{pat.FirstName} {pat.LastName}";
                 var res = await _patientService.Update(pat);
                 var l = await _loginService.Update(login);
+                await _logService.Info("Patient Information updated successfully");
+
                 return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+               await  _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

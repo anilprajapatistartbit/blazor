@@ -24,15 +24,19 @@ namespace HMS.Controller
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
         private readonly IEmailService _emailService;
+        private readonly ILogService _logService;
+
+
         #endregion
 
         #region Constructor
-        public AuthController(ILoginService loginService, IDoctorService doctorService, IPatientService patientService,IEmailService emailService)
+        public AuthController(ILoginService loginService, IDoctorService doctorService, IPatientService patientService,IEmailService emailService, ILogService logService)
         {
             _loginservice = loginService;
             _doctorService = doctorService;
             _patientService = patientService;
             _emailService = emailService;
+            _logService = logService;   
         }
         #endregion
 
@@ -47,7 +51,8 @@ namespace HMS.Controller
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                await _logService.Error(ex);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -68,7 +73,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -92,12 +97,13 @@ namespace HMS.Controller
                     var email = await _emailService.SendEmailAsync(new EmailMessage() { Body = body, IsHtml = true, ReceiversEmail = data.Email, Subject = "Login Password" });
                 }
                 var res = await _loginservice.Insert(data);
+                await _logService.Info("Login password email sended");
                 return StatusCode(StatusCodes.Status200OK, res);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -125,12 +131,13 @@ namespace HMS.Controller
                 res.HashPassword = hash;
                 res.SaltPassword = hexstring;
                 var val = await _loginservice.Update(res);
+                await _logService.Info("Password change successfully");
                 return StatusCode(StatusCodes.Status200OK, val);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -153,7 +160,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -177,7 +184,7 @@ namespace HMS.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -197,12 +204,13 @@ namespace HMS.Controller
                     data.Message = "User not found";
                    
                 }
+                await _logService.Info("Otp send successfully");
                 return StatusCode(StatusCodes.Status200OK, data);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -227,13 +235,15 @@ namespace HMS.Controller
                 if (val == null)
                 {
                     throw new Exception("Invalide Otp");
+
                 }
+                await _logService.Info("Password change successfully");
                 return StatusCode(StatusCodes.Status200OK, val);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                 await _logService.Error(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
