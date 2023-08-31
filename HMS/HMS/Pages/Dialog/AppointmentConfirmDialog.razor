@@ -46,7 +46,7 @@ else
                     @if (Status == "Reschedule" || Status == "Revisit")
                     {
                         <RadzenLabel Text="Reschedule Appointment Date" />
-                         <RadzenDatePicker @bind-Value=@appointment.AppointmentDate ShowTime="false" Name="AppointmentDate" Min="@DateTime.Today" Max="@DateTime.Today.AddMonths(12)" />
+                        <RadzenDatePicker @bind-Value=@appointment.AppointmentDate Name="AppointmentDate" Min="@DateTime.Today" ShowTime=@false DateFormat="MM/dd/yyyy" Max="@DateTime.Today.AddMonths(12)" />
                         <RadzenRequiredValidator Component="AppointmentDate" Text="Appointment date is required" Popup=@false />
                     }
                     else
@@ -61,7 +61,7 @@ else
                 else
                 {
 
-                    <RadzenText TextAlign="TextAlign.Start">Are you sure you want to @Status.ToLower() appointement ?</RadzenText>
+                    <RadzenText TextAlign="TextAlign.Start">Are you sure you want to cancel appointement ?</RadzenText>
                 }
 
             </RadzenStack>

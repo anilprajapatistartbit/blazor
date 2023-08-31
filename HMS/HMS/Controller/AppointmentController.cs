@@ -1,5 +1,6 @@
 ﻿using HMS.Model.DatabaseModel;
 using HMS.Service.Interfaces;
+using HMS.Service.SmtpService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace HMS.Controller
         #region Fields
         private readonly IAppointmentService _appointmentService;
         private readonly ILogService _logService;
+        private readonly IEmailService _emailService;
         #endregion
 
         #region Constructor
-        public AppointmentController(IAppointmentService appointmentService, ILogService logService)
+        public AppointmentController(IAppointmentService appointmentService, ILogService logService,IEmailService emailService)
         {
             _appointmentService = appointmentService;
             _logService = logService;   
+            _emailService = emailService;
         }
         #endregion
 
@@ -105,6 +108,13 @@ namespace HMS.Controller
                 val.AnalysisReport = NewData.AnalysisReport;
                 val.DoctorPrescription= NewData.DoctorPrescription;
                 var res = await _appointmentService.Update(val);
+                if (val.Status.ToLower() == "confirmed")
+                {
+                    var body = "<!DOCTYPE html><html><head><style>  body {    font-family: Arial, sans-serif;    margin: 0;    padding: 0;    background-color: #f4f4f4;  }  .container {    max-width: 600px;    margin: 0 auto;    padding: 20px;    background-color: #ffffff;    border-radius: 5px;    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  }  .header {    background-color: #007bff;    color: #ffffff;    text-align: center;    padding: 10px;    border-top-left-radius: 5px;    border-top-right-radius: 5px;  }  .content {    padding: 20px;  }</style></head><body>  <div class="+"container"+">    <div class="+"header"+">      <h1>Appointment Confirmation</h1>    </div>    <div class="+"content"+">      <p>Dear "+res.Patient.FirstName+" "+res.Patient.LastName+",</p>      <p>Your appointment has been successfully confirmed.</p>      <p><strong>Appointment Details:</strong></p>      <ul>        <li><strong>Date:</strong> "+res.AppointmentDate.ToString("dddd,dd MMMM yyyy")+"</li>        <li><strong>Time:</strong> "+res.AppointmentTime.Value.ToString("t")+"</li>        </ul>      <p>If you have any questions or need to reschedule, please contact us.</p>      <p>Thank you for choosing our services.</p></div>  </div></body></html>";
+                    var em = await _emailService.SendEmailAsync(new EmailMessage() { Body = body, IsHtml = true, ReceiversEmail = res.Patient.Email, Subject = "Appointment Confirmation" });
+
+                }
+                
                 await _logService.Info("Apointment updated");
                 return StatusCode(StatusCodes.Status200OK, res);
 
