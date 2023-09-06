@@ -50,7 +50,11 @@
                             <RadzenColumn SizeMD="6" SizeLG="6" SizeXL="6" SizeXS="12" SizeSM="12">
                                 <RadzenStack Orientation="Orientation.Vertical">
                                     <RadzenLabel Text="Select Doctor" />
-                                    <RadzenDropDown @bind-Value="appointment.DoctorId" AllowClear="true" Placeholder="Select something" Data="@doctors" Style="width: 100%;" Name="DoctorName" TextProperty="FirstName" ValueProperty="Id"></RadzenDropDown>
+                                    <RadzenDropDown @bind-Value="appointment.DoctorId" AllowClear="true" Placeholder="Select something" Data="@doctors" Style="width: 100%;" Name="DoctorName" TextProperty="FirstName" ValueProperty="Id">
+                                     <Template Context="data">
+                                            @((data as Doctor).FirstName)@((data as Doctor).MiddleName != null ? " " + (data as Doctor).MiddleName + " " : " ")@((data as Doctor).LastName)
+                                     </Template>
+                                    </RadzenDropDown>
                                     <RadzenRequiredValidator Component="DoctorName" Text="Doctor is required" Popup=@false />
                                 </RadzenStack>
                             </RadzenColumn>
