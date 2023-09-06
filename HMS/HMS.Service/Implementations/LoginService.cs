@@ -97,7 +97,7 @@ namespace HMS.Service.Implementations
         {
             try
             {
-                return (await _unitOfWork.Logins.GetData()).OrderBy(x => x.Name);
+                return (await _unitOfWork.Logins.GetAllByExpression(s=>s.LoginType.ToLower()!="admin")).OrderBy(x => x.Name);
             }
             catch
             {
