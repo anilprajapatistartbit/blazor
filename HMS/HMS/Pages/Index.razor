@@ -399,12 +399,37 @@
 
     public async Task OpenDialog(Appointment data, string status)
     {
+        List<DropDownData> dplist = new();
+
+        if (status.ToLower() == "confirmed")
+        {
+            var date1 = new DateTime(data.AppointmentDate.Year, data.AppointmentDate.Month, data.AppointmentDate.Day, 10, 0, 0);
+            var date2 = new DateTime(data.AppointmentDate.Year, data.AppointmentDate.Month, data.AppointmentDate.Day, 22, 0, 0);
+            var bookedlist = await _appointmentServiceData.GetAppointments(data.DoctorId, "doctor", date1);
+            for (int i = 0; i <= 23; i++)
+            {
+                var date = date1.AddMinutes(i * 30);
+                var check = bookedlist.Where(s => s.AppointmentTime.HasValue && s.AppointmentTime.Value == date).FirstOrDefault();
+                if (check == null)
+                {
+                    dplist.Add(new DropDownData()
+                        {
+                            Text = date.ToString("t"),
+                            DateValue = date
+                        });
+                }
+
+            }
+
+
+        }
         var header = status == "Examined" ? "Add Summary" : "Appointment Confirmation";
         await DialogService.OpenAsync<AppointmentConfirmDialog>(header, new Dictionary<string, object>
             {
                 { "OnClose", new EventCallback(this, OnDialogClose) },
                 {"appointment" , data },
-                {"Status",status}
+                {"Status",status},
+                { "slotlist",dplist}
             }, new DialogOptions() { Resizable = true, Draggable = true });
 
     }
