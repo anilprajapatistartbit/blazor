@@ -147,11 +147,12 @@
         }
         isLoading = false;
     }
-    void Reset()
+    async Task Reset()
     {
         isLoading = true;
         appointment = new();
         appointment.AppointmentDate = DateTime.Today;
+        await RemoveSearch();
         isLoading = false;
     }
     void Refresh()
